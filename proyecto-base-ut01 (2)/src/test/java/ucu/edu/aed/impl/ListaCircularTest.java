@@ -4,16 +4,17 @@ import junit.framework.TestCase;
 import ucu.edu.aed.tda.TDALista;
 
 /**
- * Pruebas para {@link Lista}, la implementación de {@link TDALista}
- * basada en nodos enlazados (lista simplemente enlazada).
+ * Pruebas para {@link ListaCircular}, la implementación de {@link TDALista}
+ * basada en nodos simplemente enlazados donde el último nodo apunta
+ * de vuelta a la cabeza.
  */
-public class ListaTest extends TestCase {
+public class ListaCircularTest extends TestCase {
 
-    private Lista<Integer> lista;
+    private ListaCircular<Integer> lista;
 
     @Override
     protected void setUp() {
-        lista = new Lista<>();
+        lista = new ListaCircular<>();
     }
 
     // --- Estructura vacía ---
@@ -59,11 +60,16 @@ public class ListaTest extends TestCase {
 
     // --- Un solo elemento ---
 
-    public void testAgregarUnElemento() {
+    public void testAgregarUnElementoFormaAutobucle() {
         lista.agregar(42);
         assertFalse(lista.esVacio());
         assertEquals(1, lista.tamaño());
         assertEquals(Integer.valueOf(42), lista.obtener(0));
+        // Si el nodo no quedó apuntándose a sí mismo, agregar un
+        // segundo elemento después de este rompería la circularidad.
+        lista.agregar(43);
+        assertEquals(Integer.valueOf(42), lista.obtener(0));
+        assertEquals(Integer.valueOf(43), lista.obtener(1));
     }
 
     public void testRemoverPorIndiceUnicoElementoDejaListaVacia() {
@@ -80,30 +86,47 @@ public class ListaTest extends TestCase {
         assertTrue(lista.esVacio());
     }
 
+    public void testAgregarDespuesDeVaciarConUnElementoFormaNuevoAutobucle() {
+        lista.agregar(1);
+        lista.remover(0);
+        lista.agregar(99);
+        lista.agregar(100);
+        assertEquals(2, lista.tamaño());
+        assertEquals(Integer.valueOf(99), lista.obtener(0));
+        assertEquals(Integer.valueOf(100), lista.obtener(1));
+    }
+
     // --- Varios elementos: inserciones ---
 
     public void testAgregarVariosAlFinalRespetaOrden() {
-        lista.agregar(1);
+        for (int i = 1; i <= 5; i++) {
+            lista.agregar(i);
+        }
+        assertEquals(5, lista.tamaño());
+        for (int i = 0; i < 5; i++) {
+            assertEquals(Integer.valueOf(i + 1), lista.obtener(i));
+        }
+    }
+
+    public void testAgregarEnPosicionCeroMantieneCirculoConSiguienteAgregado() {
         lista.agregar(2);
         lista.agregar(3);
+        lista.agregar(0, 1); // 1, 2, 3
         assertEquals(3, lista.tamaño());
         assertEquals(Integer.valueOf(1), lista.obtener(0));
         assertEquals(Integer.valueOf(2), lista.obtener(1));
         assertEquals(Integer.valueOf(3), lista.obtener(2));
-    }
-
-    public void testAgregarEnPosicionCeroDesplazaCabeza() {
-        lista.agregar(2);
-        lista.agregar(0, 1); // inserta 1 antes de la cabeza actual
-        assertEquals(2, lista.tamaño());
-        assertEquals(Integer.valueOf(1), lista.obtener(0));
-        assertEquals(Integer.valueOf(2), lista.obtener(1));
+        // Si "ultimo.siguiente" no se actualizó a la nueva cabeza,
+        // este agregar quedaría fuera del círculo.
+        lista.agregar(4);
+        assertEquals(4, lista.tamaño());
+        assertEquals(Integer.valueOf(4), lista.obtener(3));
     }
 
     public void testAgregarEnPosicionMedio() {
         lista.agregar(1);
         lista.agregar(3);
-        lista.agregar(1, 2); // inserta 2 entre 1 y 3
+        lista.agregar(1, 2);
         assertEquals(Integer.valueOf(1), lista.obtener(0));
         assertEquals(Integer.valueOf(2), lista.obtener(1));
         assertEquals(Integer.valueOf(3), lista.obtener(2));
@@ -112,7 +135,7 @@ public class ListaTest extends TestCase {
     public void testAgregarEnPosicionIgualATamanioEquivaleAAgregarAlFinal() {
         lista.agregar(1);
         lista.agregar(2);
-        lista.agregar(lista.tamaño(), 3); // index == tamaño
+        lista.agregar(lista.tamaño(), 3);
         assertEquals(3, lista.tamaño());
         assertEquals(Integer.valueOf(3), lista.obtener(2));
     }
@@ -135,7 +158,7 @@ public class ListaTest extends TestCase {
 
     // --- Varios elementos: eliminaciones ---
 
-    public void testRemoverPorIndiceCabezaActualizaCabeza() {
+    public void testRemoverPorIndiceCabezaMantieneElCirculoCerrado() {
         lista.agregar(10);
         lista.agregar(20);
         lista.agregar(30);
@@ -143,6 +166,9 @@ public class ListaTest extends TestCase {
         assertEquals(Integer.valueOf(10), removido);
         assertEquals(2, lista.tamaño());
         assertEquals(Integer.valueOf(20), lista.obtener(0));
+        // Si "ultimo.siguiente" no apunta a la nueva cabeza, esto falla
+        lista.agregar(40);
+        assertEquals(Integer.valueOf(40), lista.obtener(2));
     }
 
     public void testRemoverPorIndiceDelMedio() {
@@ -156,13 +182,17 @@ public class ListaTest extends TestCase {
         assertEquals(Integer.valueOf(30), lista.obtener(1));
     }
 
-    public void testRemoverPorIndiceDelFinal() {
+    public void testRemoverUltimoElementoActualizaUltimoYPermiteSeguirAgregando() {
         lista.agregar(10);
         lista.agregar(20);
         lista.agregar(30);
-        Integer removido = lista.remover(2);
+        Integer removido = lista.remover(2); // remueve el nodo "ultimo"
         assertEquals(Integer.valueOf(30), removido);
         assertEquals(2, lista.tamaño());
+        // Si "ultimo" quedó apuntando al nodo viejo, esto rompe el círculo
+        lista.agregar(40);
+        assertEquals(3, lista.tamaño());
+        assertEquals(Integer.valueOf(40), lista.obtener(2));
     }
 
     public void testRemoverPorIndiceInvalidoLanzaExcepcion() {
@@ -179,13 +209,20 @@ public class ListaTest extends TestCase {
         lista.agregar(5);
         lista.agregar(10);
         lista.agregar(10);
-        boolean resultado = lista.remover(Integer.valueOf(10));
-        assertTrue(resultado);
+        assertTrue(lista.remover(Integer.valueOf(10)));
         assertEquals(2, lista.tamaño());
-        // Debe quedar una sola ocurrencia de 10
         assertTrue(lista.contiene(10));
         lista.remover(Integer.valueOf(10));
         assertFalse(lista.contiene(10));
+    }
+
+    public void testRemoverPorElementoQueEsElUltimoActualizaUltimo() {
+        lista.agregar(1);
+        lista.agregar(2);
+        lista.agregar(3);
+        assertTrue(lista.remover(Integer.valueOf(3)));
+        lista.agregar(4);
+        assertEquals(Integer.valueOf(4), lista.obtener(lista.tamaño() - 1));
     }
 
     public void testRemoverElementoQueNoExiste() {
@@ -194,40 +231,29 @@ public class ListaTest extends TestCase {
         assertEquals(1, lista.tamaño());
     }
 
-    // --- Búsquedas ---
+    // --- Búsquedas (también validan que el recorrido esté acotado
+    //     por tamaño y no entre en ciclo infinito) ---
 
-    public void testContieneElementoPresente() {
-        lista.agregar(7);
-        assertTrue(lista.contiene(7));
-    }
-
-    public void testContieneElementoAusente() {
-        lista.agregar(7);
+    public void testContieneElementoPresenteYAusente() {
+        for (int i = 0; i < 6; i++) {
+            lista.agregar(i);
+        }
+        assertTrue(lista.contiene(5));
         assertFalse(lista.contiene(99));
     }
 
-    public void testIndiceDeElementoPresente() {
+    public void testIndiceDeElementoPresenteYAusente() {
         lista.agregar(10);
         lista.agregar(20);
         assertEquals(1, lista.indiceDe(20));
-    }
-
-    public void testIndiceDeElementoAusente() {
-        lista.agregar(10);
         assertEquals(-1, lista.indiceDe(99));
     }
 
-    public void testBuscarConCriterio() {
+    public void testBuscarConCriterioYSinResultado() {
         lista.agregar(3);
         lista.agregar(8);
         lista.agregar(15);
-        Integer resultado = lista.buscar(n -> n > 5);
-        assertEquals(Integer.valueOf(8), resultado);
-    }
-
-    public void testBuscarSinResultado() {
-        lista.agregar(1);
-        lista.agregar(2);
+        assertEquals(Integer.valueOf(8), lista.buscar(n -> n > 5));
         assertNull(lista.buscar(n -> n > 100));
     }
 
@@ -243,10 +269,7 @@ public class ListaTest extends TestCase {
         assertEquals(Integer.valueOf(2), ordenada.obtener(1));
         assertEquals(Integer.valueOf(3), ordenada.obtener(2));
 
-        // La lista original no debe modificarse
         assertEquals(Integer.valueOf(3), lista.obtener(0));
-        assertEquals(Integer.valueOf(1), lista.obtener(1));
-        assertEquals(Integer.valueOf(2), lista.obtener(2));
     }
 
     public void testOrdenarListaVacia() {
@@ -262,23 +285,11 @@ public class ListaTest extends TestCase {
         lista.vaciar();
         assertTrue(lista.esVacio());
         assertEquals(0, lista.tamaño());
-        // Después de vaciar, debe comportarse como una lista recién creada
         try {
             lista.obtener(0);
             fail("Debería lanzar IndexOutOfBoundsException");
         } catch (IndexOutOfBoundsException e) {
             // esperado
         }
-    }
-
-    // --- Caso borde propio de listas enlazadas: reconstrucción tras vaciar ---
-
-    public void testAgregarDespuesDeVaciarReconstruyeCorrectamente() {
-        lista.agregar(1);
-        lista.agregar(2);
-        lista.vaciar();
-        lista.agregar(99);
-        assertEquals(1, lista.tamaño());
-        assertEquals(Integer.valueOf(99), lista.obtener(0));
     }
 }

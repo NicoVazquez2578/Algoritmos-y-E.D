@@ -1,4 +1,4 @@
-package ucu.edu.aed.tda.Implementaciones;
+package ucu.edu.aed.impl;
 
 public class TDANodo<T> {
     protected T dato;
