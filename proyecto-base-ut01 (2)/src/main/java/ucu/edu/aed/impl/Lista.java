@@ -1,5 +1,6 @@
-package ucu.edu.aed.tda.Implementaciones;
+package ucu.edu.aed.impl;
 import ucu.edu.aed.tda.TDALista;
+
 import java.util.function.Predicate;
 import java.util.Comparator;
 import java.util.List;
