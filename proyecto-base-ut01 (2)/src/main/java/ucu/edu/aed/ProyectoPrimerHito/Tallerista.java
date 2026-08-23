@@ -1,3 +1,4 @@
+package ucu.edu.aed.ProyectoPrimerHito;
 /**
  * Representa a un tallerista (mecánico) del taller.
  *
