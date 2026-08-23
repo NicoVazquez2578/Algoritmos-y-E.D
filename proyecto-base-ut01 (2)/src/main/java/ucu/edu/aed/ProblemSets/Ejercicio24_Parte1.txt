@@ -1,0 +1,229 @@
+Ejercicio 24 - Conjuntos
+Parte 1: Algoritmos de Union e Interseccion sobre TDALista
+
+Contexto: un Conjunto se representa mediante un TDALista sin elementos
+repetidos. Los algoritmos de esta parte reciben dos conjuntos (A y B)
+YA ORDENADOS de forma creciente segun un mismo criterio de comparacion
+(criterioOrden), y calculan un tercer conjunto a partir de ellos, sin
+modificar A ni B.
+
+
+0) IDEA INTUITIVA, ANTES DEL SEUDOCODIGO
+
+Pensemos primero en un ejemplo chico, con numeros, para entender la idea
+antes de mirar el algoritmo formal.
+
+  A = [1, 3, 5, 7]      (ya ordenado)
+  B = [3, 4, 5, 9]      (ya ordenado)
+
+La forma "obvia" de calcular la union seria: recorrer A, y para cada
+elemento de A, recorrer TODO B para ver si ya esta ahi (y viceversa para
+no perderse los elementos que estan solo en B). Eso funciona, pero hace
+mucho trabajo de mas: por cada elemento de A se vuelve a mirar B entero,
+aunque B tambien este ordenado y ya hayamos "pasado" esa zona.
+
+Como A y B YA estan ordenados, se puede hacer algo mas parecido a como
+uno compara dos mazos de cartas ya ordenados: se ponen dos "punteros"
+(en realidad son solo dos indices, i para A y j para B) al principio de
+cada lista, y se comparan los elementos donde apuntan:
+
+  i=0 (A[i]=1)   j=0 (B[j]=3)   ->  1 < 3   => 1 va al resultado, avanza i
+  i=1 (A[i]=3)   j=0 (B[j]=3)   ->  3 == 3  => 3 va al resultado (una sola
+                                                vez), avanzan i y j
+  i=2 (A[i]=5)   j=1 (B[j]=4)   ->  5 > 4   => 4 va al resultado, avanza j
+  i=2 (A[i]=5)   j=2 (B[j]=5)   ->  5 == 5  => 5 va al resultado, avanzan
+                                                i y j
+  i=3 (A[i]=7)   j=3 (B[j]=9)   ->  7 < 9   => 7 va al resultado, avanza i
+  i=4 (fin de A) j=3 (B[j]=9)   ->  ya no queda nada de A: se agrega
+                                     directamente lo que falte de B (el 9)
+
+  Resultado (union):        [1, 3, 4, 5, 7, 9]
+  Resultado (interseccion): [3, 5]   (los unicos que aparecieron en AMBAS
+                                       comparaciones como iguales)
+
+Fijate que en ningun momento volvimos a mirar un elemento ya visitado: i
+y j solo avanzan hacia adelante. Esa es la clave de por que este metodo
+es mas rapido que el "obvio" de recorrer todo contra todo — mas abajo,
+en el punto 5, se lo compara formalmente.
+
+
+1) ESPECIFICACION EN LENGUAJE NATURAL
+
+Union(A, B):
+Dados dos conjuntos A y B, construye y devuelve un nuevo conjunto C que
+contiene todos los elementos que pertenecen a A, a B, o a ambos, sin
+repetir ningun elemento.
+
+Interseccion(A, B):
+Dados dos conjuntos A y B, construye y devuelve un nuevo conjunto C que
+contiene unicamente los elementos que pertenecen simultaneamente a A y
+a B.
+
+
+2) PRE Y POST CONDICIONES
+
+Union(A, B)
+  Pre:  A y B son TDALista ordenadas de forma creciente segun un mismo
+        criterioOrden. Ni A ni B tienen elementos repetidos dentro de
+        si mismas.
+  Post: se devuelve un nuevo TDALista C, ordenado segun el mismo
+        criterioOrden, tal que:
+          - para todo elemento x, x pertenece a C si y solo si x
+            pertenece a A o x pertenece a B.
+          - C no tiene elementos repetidos.
+          - A y B quedan sin modificar.
+
+Interseccion(A, B)
+  Pre:  igual que Union.
+  Post: se devuelve un nuevo TDALista C, ordenado segun el mismo
+        criterioOrden, tal que:
+          - para todo elemento x, x pertenece a C si y solo si x
+            pertenece a A y x pertenece a B (a ambos a la vez).
+          - C no tiene elementos repetidos.
+          - A y B quedan sin modificar.
+
+
+3) SEUDOCODIGO
+
+(Nota: "Tamaño(A)" es la cantidad de elementos de A; "Obtener(A, i)" es
+el elemento que esta en la posicion i de A, empezando desde 0; esto es
+exactamente lo mismo que hacen tamaño() y obtener(i) en el TDALista ya
+implementado.)
+
+Algoritmo Union(A, B, criterioOrden)
+    C = NuevaListaVacia()
+    i = 0
+    j = 0
+    Mientras i < Tamaño(A) Y j < Tamaño(B) Hacer
+        a = Obtener(A, i)
+        b = Obtener(B, j)
+        cmp = criterioOrden(a, b)
+        Si cmp < 0 Entonces
+            // "a" es menor: como B esta ordenado, "a" no puede
+            // estar mas adelante en B, asi que se agrega directo
+            AgregarAlFinal(C, a)
+            i = i + 1
+        Sino Si cmp > 0 Entonces
+            // simetrico al caso anterior, pero con "b"
+            AgregarAlFinal(C, b)
+            j = j + 1
+        Sino
+            // cmp == 0: son el mismo elemento, esta en los dos
+            // conjuntos. Se agrega una unica vez.
+            AgregarAlFinal(C, a)
+            i = i + 1
+            j = j + 1
+        Fin Si
+    Fin Mientras
+    // A esta altura, A o B (o los dos) ya se recorrieron por completo.
+    // Lo que haya quedado sin visitar en el otro se agrega tal cual.
+    Mientras i < Tamaño(A) Hacer
+        AgregarAlFinal(C, Obtener(A, i))
+        i = i + 1
+    Fin Mientras
+    Mientras j < Tamaño(B) Hacer
+        AgregarAlFinal(C, Obtener(B, j))
+        j = j + 1
+    Fin Mientras
+    Devolver C
+Fin Algoritmo
+
+
+Algoritmo Interseccion(A, B, criterioOrden)
+    C = NuevaListaVacia()
+    i = 0
+    j = 0
+    Mientras i < Tamaño(A) Y j < Tamaño(B) Hacer
+        a = Obtener(A, i)
+        b = Obtener(B, j)
+        cmp = criterioOrden(a, b)
+        Si cmp < 0 Entonces
+            // "a" no puede estar en B (ver razonamiento de Union):
+            // se descarta sin agregarlo a C
+            i = i + 1
+        Sino Si cmp > 0 Entonces
+            j = j + 1
+        Sino
+            // esta en los dos conjuntos: si pertenece a la interseccion
+            AgregarAlFinal(C, a)
+            i = i + 1
+            j = j + 1
+        Fin Si
+    Fin Mientras
+    // A diferencia de Union, aca NO hace falta agregar lo que quede sin
+    // visitar: si un conjunto se termino, ya no puede haber mas
+    // elementos en comun con el otro.
+    Devolver C
+Fin Algoritmo
+
+
+4) ESPECIFICACION DE CASOS DE PRUEBA
+
+  Caso 1  - A vacio y B vacio           -> Union vacia, Interseccion vacia.
+  Caso 2  - A vacio, B con elementos    -> Union = B, Interseccion vacia.
+  Caso 3  - A y B disjuntos             -> Union = A U B (tamaño A+B),
+                                            Interseccion vacia.
+  Caso 4  - A y B identicos             -> Union = A (sin duplicar),
+                                            Interseccion = A.
+  Caso 5  - A y B con superposicion     -> Union no repite los elementos
+            parcial                        comunes; Interseccion contiene
+                                            solo los elementos comunes.
+  Caso 6  - A subconjunto de B          -> Union = B, Interseccion = A.
+  Caso 7  - El elemento comun esta en   -> valida que el algoritmo compare
+            el extremo (primero o           correctamente los bordes de
+            ultimo) de ambas listas         ambos recorridos, no solo el
+                                            medio.
+  Caso 8  - Conjuntos de un solo        -> caso minimo no vacio, valida
+            elemento                       las tres ramas del cmp (<,>,=).
+
+  Estos casos, llevados a JUnit, son los que se implementan en
+  Ejercicio24Test.java (Parte 3, punto 6).
+
+
+5) ANALISIS DETALLADO DEL ORDEN DE TIEMPO DE EJECUCION
+
+Sea n = Tamaño(A) y m = Tamaño(B).
+
+Como se vio en el ejemplo del punto 0, los indices i y j solo avanzan
+hacia adelante: en cada vuelta del "Mientras" principal se incrementa i,
+j, o los dos, pero nunca se retrocede ni se vuelve a mirar una posicion
+ya visitada. Como i esta acotado por n (no puede pasar de Tamaño(A)) y j
+por m, la cantidad total de vueltas del bucle principal es, como mucho,
+n + m. Union agrega ademas, al final, lo que haya quedado sin recorrer
+de A o de B (a lo sumo n + m operaciones mas, pero sin volver a
+comparar nada). Por lo tanto:
+
+  Tiempo:  O(n + m)   -- el trabajo crece en forma lineal (proporcional)
+                         al tamaño combinado de ambos conjuntos, no al
+                         producto de sus tamaños.
+  Espacio: O(n + m) en el peor caso para Union (si ningun elemento se
+           repite entre A y B, el resultado tiene n + m elementos);
+           O(min(n, m)) en el peor caso para Interseccion (el resultado
+           nunca puede tener mas elementos que el conjunto mas chico).
+
+Este analisis asume que "Obtener(lista, indice)" cuesta O(1), es decir,
+que acceder a la posicion i es practicamente inmediato sin importar
+donde este esa posicion. Esa suposicion es importante y no es gratis:
+si la lista estuviera implementada con nodos enlazados (como Lista o
+ListaDoble), pedir Obtener(i) implicaria recorrer los enlaces desde el
+principio cada vez que se lo llama. Si eso pasara en cada vuelta del
+bucle, el costo total dejaria de ser O(n + m) y pasaria a ser O(n · m)
+en el peor caso -- exactamente el mismo orden que el enfoque "obvio" que
+se queria evitar (recorrer A y, para cada elemento, preguntar si esta
+Contenido en B, lo cual tambien recorre B entero cada vez). Por esta
+razon, en la Parte 2 se decidio implementar el TDA Conjunto sobre
+ListaArray (que sí da acceso en O(1) por indice) en lugar de sobre una
+de las listas enlazadas: esa eleccion de representacion es justamente
+lo que hace que Union e Interseccion cumplan de verdad el O(n + m)
+analizado aca.
+
+Resumen de la comparacion:
+  Enfoque "obvio"          (para cada elemento de A, preguntar si esta
+  (sin aprovechar el       en B): O(n · m). No aprovecha que A y B ya
+  orden):                  vienen ordenados.
+
+  Enfoque con dos punteros O(n + m). Aprovecha el orden para descartar
+  (el que se implemento):  comparaciones enteras: si a < b, "a" no
+                            puede aparecer mas adelante en B (porque B
+                            es creciente), asi que se lo descarta sin
+                            volver a mirarlo nunca mas.
