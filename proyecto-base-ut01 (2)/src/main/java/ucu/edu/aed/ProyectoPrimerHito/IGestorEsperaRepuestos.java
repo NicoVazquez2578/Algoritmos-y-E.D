@@ -3,47 +3,28 @@ package ucu.edu.aed.ProyectoPrimerHito;
 import ucu.edu.aed.tda.TDALista;
 
 /**
- * Contrato para administrar el conjunto de {@link Vehiculo} que quedaron
- * varados esperando un repuesto.
+ * Administra los vehiculos que estan esperando un repuesto.
  *
- * <p>A diferencia de la cola de espera general del taller (FIFO puro), acá
- * hace falta poder sacar un vehiculo especifico de en medio de la
- * estructura cuando llega <em>su</em> repuesto — sin importar si es el
- * primero que entro o no. Por eso la operacion central no es "sacar el
- * primero" sino {@link #quitarPorPatente(String)}.</p>
+ * A diferencia de la cola normal del taller (FIFO), aca hace falta poder
+ * sacar un vehiculo puntual apenas llega su repuesto, sin importar el
+ * orden de llegada. Por eso el metodo clave es quitarPorPatente().
  *
- * <p>Existe como interfaz (y no como una unica clase) porque el
- * Desafio 3 pide comparar dos formas de resolver esa busqueda por
- * patente: {@code GestorEsperaRepuestosV1} la busca recorriendo
- * secuencialmente — O(n) — y una eventual {@code GestorEsperaRepuestosV2}
- * mantendria ademas un indice auxiliar patente → nodo para ubicarla en
- * O(1). El {@code Taller} solo deberia conocer esta interfaz, nunca la
- * implementacion concreta, para poder intercambiarlas sin tocar el resto
- * del codigo.</p>
+ * Es una interfaz porque el Desafio 3 pide comparar dos formas de buscar
+ * por patente: GestorEsperaRepuestosV1 recorre la lista (O(n)), y una
+ * futura GestorEsperaRepuestosV2 podria usar un indice auxiliar para
+ * ubicarla mas rapido (O(1)).
  */
 public interface IGestorEsperaRepuestos {
 
-    /**
-     * Agrega {@code vehiculo} al conjunto de vehiculos esperando repuesto.
-     *
-     * @param vehiculo vehiculo a agregar; no puede ser {@code null}
-     */
+    /** Agrega un vehiculo a la espera de repuesto. */
     void agregar(Vehiculo vehiculo);
 
     /**
-     * Ubica el vehiculo cuya patente coincide con {@code patente}, lo saca
-     * de la espera y lo devuelve.
-     *
-     * @param patente patente a buscar; no puede ser {@code null}
-     * @return el vehiculo encontrado y removido, o {@code null} si ningun
-     *         vehiculo en espera tiene esa patente
+     * Busca el vehiculo con esa patente, lo saca de la espera y lo
+     * devuelve. Si no lo encuentra, devuelve null.
      */
     Vehiculo quitarPorPatente(String patente);
 
-    /**
-     * Expone los vehiculos actualmente en espera de repuesto.
-     *
-     * @return la lista de vehiculos en espera
-     */
+    /** Devuelve los vehiculos que estan esperando repuesto. */
     TDALista<Vehiculo> listar();
 }

@@ -3,10 +3,10 @@ package ucu.edu.aed.ProyectoPrimerHito;
 import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- * Unidad de trabajo sobre un {@link Vehiculo}: un mantenimiento planificado,
- * la reparacion original por la que ingreso, o una falla adicional
- * detectada durante la inspeccion.
+/*
+  Unidad de trabajo sobre un {@link Vehiculo}: un mantenimiento planificado,
+  la reparacion original por la que ingreso, o una falla adicional
+  detectada durante la inspeccion.
  */
 public class Tarea {
 

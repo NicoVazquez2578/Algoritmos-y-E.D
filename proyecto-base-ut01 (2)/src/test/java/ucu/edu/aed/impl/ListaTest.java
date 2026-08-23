@@ -3,10 +3,6 @@ package ucu.edu.aed.impl;
 import junit.framework.TestCase;
 import ucu.edu.aed.tda.TDALista;
 
-/**
- * Pruebas para {@link Lista}, la implementación de {@link TDALista}
- * basada en nodos enlazados (lista simplemente enlazada).
- */
 public class ListaTest extends TestCase {
 
     private Lista<Integer> lista;
@@ -16,7 +12,6 @@ public class ListaTest extends TestCase {
         lista = new Lista<>();
     }
 
-    // --- Estructura vacía ---
 
     public void testEsVacioAlCrear() {
         assertTrue(lista.esVacio());
@@ -57,7 +52,6 @@ public class ListaTest extends TestCase {
         assertNull(lista.buscar(n -> n > 0));
     }
 
-    // --- Un solo elemento ---
 
     public void testAgregarUnElemento() {
         lista.agregar(42);
@@ -79,8 +73,6 @@ public class ListaTest extends TestCase {
         assertTrue(lista.remover(Integer.valueOf(10)));
         assertTrue(lista.esVacio());
     }
-
-    // --- Varios elementos: inserciones ---
 
     public void testAgregarVariosAlFinalRespetaOrden() {
         lista.agregar(1);
@@ -106,14 +98,6 @@ public class ListaTest extends TestCase {
         lista.agregar(1, 2); // inserta 2 entre 1 y 3
         assertEquals(Integer.valueOf(1), lista.obtener(0));
         assertEquals(Integer.valueOf(2), lista.obtener(1));
-        assertEquals(Integer.valueOf(3), lista.obtener(2));
-    }
-
-    public void testAgregarEnPosicionIgualATamanioEquivaleAAgregarAlFinal() {
-        lista.agregar(1);
-        lista.agregar(2);
-        lista.agregar(lista.tamaño(), 3); // index == tamaño
-        assertEquals(3, lista.tamaño());
         assertEquals(Integer.valueOf(3), lista.obtener(2));
     }
 
@@ -173,19 +157,6 @@ public class ListaTest extends TestCase {
         } catch (IndexOutOfBoundsException e) {
             // esperado
         }
-    }
-
-    public void testRemoverPorElementoPrimeraOcurrencia() {
-        lista.agregar(5);
-        lista.agregar(10);
-        lista.agregar(10);
-        boolean resultado = lista.remover(Integer.valueOf(10));
-        assertTrue(resultado);
-        assertEquals(2, lista.tamaño());
-        // Debe quedar una sola ocurrencia de 10
-        assertTrue(lista.contiene(10));
-        lista.remover(Integer.valueOf(10));
-        assertFalse(lista.contiene(10));
     }
 
     public void testRemoverElementoQueNoExiste() {

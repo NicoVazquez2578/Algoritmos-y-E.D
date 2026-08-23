@@ -1,11 +1,11 @@
 package ucu.edu.aed.ProblemSets;
 
-import ucu.edu.aed.impl.Pila;
-import ucu.edu.aed.tda.TDAPila;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
+import ucu.edu.aed.impl.Pila;
+import ucu.edu.aed.tda.TDAPila;
 
 
   //Ejercicio 26: Pilas.
@@ -23,27 +23,18 @@ public class Ejercicio26 {
         }
 
         /**
-          Recorre la lista de caracteres del código fuente y verifica
+          Recorre la lista de caracteres y verifica
           que los símbolos de apertura/cierre estén correctamente
           balanceados y anidados.
          
-          <p>Se programa contra la interfaz {@link TDAPila}, no contra
-          la clase concreta: a este método no le importa cómo está
-          implementada la pila por dentro.</p>
-         
           <p>Cualquier caracter que no sea un símbolo de apertura o
-          cierre (letras, números, operadores, espacios, etc.) se
-          ignora — así se puede pasar código fuente real, no solo una
-          secuencia "pura" de corchetes.</p>
+          cierre se ignora
          
           <p><b>Complejidad:</b> O(n) en tiempo — se recorre la lista
           una sola vez y cada apertura se apila y se desapila a lo
           sumo una vez. O(n) en espacio en el peor caso (una entrada
           formada solo por símbolos de apertura, ej. "((((((").</p>
          
-          @param listaDeEntrada la secuencia de caracteres a validar
-          @return {@code true} si los corchetes están correctamente
-                  balanceados; {@code false} en caso contrario
          */
         public boolean controlCorchetes(List<Character> listaDeEntrada) {
             TDAPila<Character> pila = new Pila<>();

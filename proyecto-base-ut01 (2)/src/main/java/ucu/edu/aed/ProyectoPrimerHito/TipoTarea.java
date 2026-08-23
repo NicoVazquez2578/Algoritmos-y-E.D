@@ -1,7 +1,7 @@
 package ucu.edu.aed.ProyectoPrimerHito;
 
-/**
- * Clasificacion de una {@link Tarea} asociada a un vehiculo.
+/*
+  Clasificacion de una tarea asociada a un vehiculo.
  */
 public enum TipoTarea {
     MANTENIMIENTO,

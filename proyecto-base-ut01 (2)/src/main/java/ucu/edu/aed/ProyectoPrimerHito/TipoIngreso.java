@@ -1,7 +1,7 @@
 package ucu.edu.aed.ProyectoPrimerHito;
 
-/**
- * Motivo por el cual un {@link Vehiculo} ingreso al taller.
+/*
+  Motivo por el cual un Vehiculo ingreso al taller.
  */
 public enum TipoIngreso {
     MANTENIMIENTO_PLANIFICADO,
