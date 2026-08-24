@@ -1,4 +1,4 @@
-package ucu.edu.aed.proyectoTests;
+package ucu.edu.aed.ProyectoPrimerHito;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,9 +7,8 @@ import ucu.edu.aed.tda.TDAPila;
 
 // TODO: reemplazar por los nombres reales de tus implementaciones concretas
 // de TDAPila y TDALista hechas en el Desafío 1.
-import ucu.edu.aed.tda.impl.Pila;
-import ucu.edu.aed.tda.impl.Lista;
-import ucu.edu.aed.ProyectoPrimerHito.*;
+import ucu.edu.aed.tda.impl.PilaEnlazada;
+import ucu.edu.aed.tda.impl.ListaEnlazada;
 
 import java.time.LocalDate;
 
@@ -27,8 +26,8 @@ class TalleristaTest {
     }
 
     private Vehiculo crearVehiculo(String patente, int nivelUrgencia) {
-        TDAPila<Tarea> tareasPendientes = new Pila<>();
-        TDALista<Tarea> historial = new Lista<>();
+        TDAPila<Tarea> tareasPendientes = new PilaEnlazada<>();
+        TDALista<Tarea> historial = new ListaEnlazada<>();
         return new Vehiculo(patente, "Chevrolet", "Onix", 2020, "Juan Dueño",
                 TipoIngreso.FALLA_INFORMADA, nivelUrgencia, LocalDate.now(),
                 tareasPendientes, historial);
