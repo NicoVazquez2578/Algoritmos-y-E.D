@@ -1,8 +1,9 @@
-package ucu.edu.aed.ej17;
+package ucu.edu.aed.ProblemSets.ej17;
+
+import java.util.Comparator;
 
 import ucu.edu.aed.impl.ListaArray;
 import ucu.edu.aed.tda.TDALista;
-import java.util.Comparator;
 
 /**
  * Gestiona el catálogo de libros de la biblioteca.

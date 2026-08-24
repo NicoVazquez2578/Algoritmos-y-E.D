@@ -1,4 +1,4 @@
-package ucu.edu.aed.ej23;
+package ucu.edu.aed.ProblemSets.ej23;
 
 /**
  * Punto de entrada para el sistema de sucursales (Ejercicio 23 — Tareas 1 a 4).

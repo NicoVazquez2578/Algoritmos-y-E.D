@@ -1,10 +1,11 @@
-package ucu.edu.aed.ej23;
+package ucu.edu.aed.ProblemSets.ej23;
 
-import ucu.edu.aed.impl.ListaArray;
-import ucu.edu.aed.tda.TDALista;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import ucu.edu.aed.impl.ListaArray;
+import ucu.edu.aed.tda.TDALista;
 
 /**
  * Gestiona el directorio de sucursales de la empresa AED (Ejercicio 23).

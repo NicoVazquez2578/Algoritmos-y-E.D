@@ -1,4 +1,4 @@
-package ucu.edu.aed.ej17;
+package ucu.edu.aed.ProblemSets.ej17;
 
 import ucu.edu.aed.impl.ListaArray;
 import ucu.edu.aed.tda.TDALista;

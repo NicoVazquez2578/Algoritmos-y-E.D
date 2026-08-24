@@ -1,9 +1,10 @@
-package ucu.edu.aed.ej17;
+package ucu.edu.aed.ProblemSets.ej17;
 
-import ucu.edu.aed.tda.TDALista;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import ucu.edu.aed.tda.TDALista;
 
 /**
  * Integra el procesamiento de adquisiciones y préstamos (Ejercicio 17 - Paso 3).

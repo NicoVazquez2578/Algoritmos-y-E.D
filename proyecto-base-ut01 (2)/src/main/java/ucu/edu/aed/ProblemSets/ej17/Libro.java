@@ -1,4 +1,4 @@
-package ucu.edu.aed.ej17;
+package ucu.edu.aed.ProblemSets.ej17;
 
 /**
  * Representa un libro del catálogo de la biblioteca.
