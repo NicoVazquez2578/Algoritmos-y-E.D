@@ -1,0 +1,19 @@
+Algoritmo PoneEnCola(unElemento)
+    Si cantidad == CAPACIDAD Entonces
+        Lanzar Error ("Cola Llena")
+    Fin Si
+    fin = (fin + 1) MOD CAPACIDAD
+    vector[fin] = unElemento
+    cantidad = cantidad + 1
+Fin Algoritmo
+
+Algoritmo QuitaDeCola()
+    Si cantidad == 0 Entonces
+        Lanzar Error ("Cola Vacía")
+    Fin Si
+    elemento = vector[frente]
+    vector[frente] = NULO
+    frente = (frente + 1) MOD CAPACIDAD
+    cantidad = cantidad - 1
+    Devolver elemento
+Fin Algoritmo
