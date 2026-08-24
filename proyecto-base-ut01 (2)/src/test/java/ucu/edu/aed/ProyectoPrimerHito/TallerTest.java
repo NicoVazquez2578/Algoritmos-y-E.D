@@ -1,25 +1,19 @@
 package ucu.edu.aed.ProyectoPrimerHito;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import junit.framework.TestCase;
+import ucu.edu.aed.impl.Cola;
+import ucu.edu.aed.impl.ColaPrioridad;
+import ucu.edu.aed.impl.Lista;
+import ucu.edu.aed.impl.Pila;
 import ucu.edu.aed.tda.TDACola;
 import ucu.edu.aed.tda.TDAColaPrioridad;
 import ucu.edu.aed.tda.TDALista;
 import ucu.edu.aed.tda.TDAPila;
 
-// TODO: reemplazar por los nombres reales de tus implementaciones concretas
-// hechas en el Desafío 1.
-import ucu.edu.aed.tda.impl.ColaEnlazada;
-import ucu.edu.aed.tda.impl.ColaPrioridadEnlazada;
-import ucu.edu.aed.tda.impl.ListaEnlazada;
-import ucu.edu.aed.tda.impl.PilaEnlazada;
-
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class TallerTest {
+public class TallerTest extends TestCase {
 
     private Taller taller;
     private TDACola<Vehiculo> colaEspera;
@@ -33,21 +27,21 @@ class TallerTest {
     private static final int NIVEL_URGENTE = 9;
     private static final int NIVEL_NORMAL = 3;
 
-    @BeforeEach
-    void setUp() {
-        colaEspera = new ColaEnlazada<>();
-        colaUrgencias = new ColaPrioridadEnlazada<>();
-        talleristas = new ListaEnlazada<>();
-        historialEntregados = new ListaEnlazada<>();
-        gestorEsperaRepuestos = new GestorEsperaRepuestosV1(new ListaEnlazada<>());
+    @Override
+    protected void setUp() {
+        colaEspera = new Cola<>();
+        colaUrgencias = new ColaPrioridad<>();
+        talleristas = new Lista<>();
+        historialEntregados = new Lista<>();
+        gestorEsperaRepuestos = new GestorEsperaRepuestos(new Lista<>());
 
         taller = new Taller(colaEspera, gestorEsperaRepuestos, talleristas,
                 historialEntregados, colaUrgencias);
     }
 
     private Vehiculo crearVehiculo(String patente, int nivelUrgencia) {
-        TDAPila<Tarea> tareasPendientes = new PilaEnlazada<>();
-        TDALista<Tarea> historial = new ListaEnlazada<>();
+        TDAPila<Tarea> tareasPendientes = new Pila<>();
+        TDALista<Tarea> historial = new Lista<>();
         return new Vehiculo(patente, "Chevrolet", "Onix", 2020, "Juan Dueño",
                 TipoIngreso.FALLA_INFORMADA, nivelUrgencia, LocalDate.now(),
                 tareasPendientes, historial);
@@ -61,22 +55,29 @@ class TallerTest {
 
     // ---------- registrarVehiculo / atenderProximoVehiculo ----------
 
-    @Test
-    void atenderProximoVehiculo_sinTalleristasDisponibles_lanzaExcepcion() {
+    public void testAtenderProximoVehiculo_sinTalleristasDisponibles_lanzaExcepcion() {
         taller.registrarVehiculo(crearVehiculo("AAA1111", NIVEL_NORMAL));
 
-        assertThrows(IllegalStateException.class, () -> taller.atenderProximoVehiculo());
+        try {
+            taller.atenderProximoVehiculo();
+            fail("Debería lanzar IllegalStateException");
+        } catch (IllegalStateException e) {
+            // esperado
+        }
     }
 
-    @Test
-    void atenderProximoVehiculo_sinVehiculosEnEspera_lanzaExcepcion() {
+    public void testAtenderProximoVehiculo_sinVehiculosEnEspera_lanzaExcepcion() {
         agregarTallerista("T01");
 
-        assertThrows(NoSuchElementException.class, () -> taller.atenderProximoVehiculo());
+        try {
+            taller.atenderProximoVehiculo();
+            fail("Debería lanzar NoSuchElementException");
+        } catch (NoSuchElementException e) {
+            // esperado
+        }
     }
 
-    @Test
-    void atenderProximoVehiculo_respetaOrdenDeLlegadaEntreVehiculosNormales() {
+    public void testAtenderProximoVehiculo_respetaOrdenDeLlegadaEntreVehiculosNormales() {
         agregarTallerista("T01");
         Vehiculo primero = crearVehiculo("AAA1111", NIVEL_NORMAL);
         Vehiculo segundo = crearVehiculo("BBB2222", NIVEL_NORMAL);
@@ -89,8 +90,7 @@ class TallerTest {
         assertEquals(EstadoVehiculo.EN_REPARACION, primero.getEstado());
     }
 
-    @Test
-    void atenderProximoVehiculo_priorizaVehiculoUrgentePorSobreElOrdenDeLlegada() {
+    public void testAtenderProximoVehiculo_priorizaVehiculoUrgentePorSobreElOrdenDeLlegada() {
         agregarTallerista("T01");
         Vehiculo llegoPrimeroPeroNormal = crearVehiculo("AAA1111", NIVEL_NORMAL);
         Vehiculo llegoSegundoPeroUrgente = crearVehiculo("BBB2222", NIVEL_URGENTE);
@@ -102,8 +102,7 @@ class TallerTest {
         assertEquals(llegoSegundoPeroUrgente, asignado.getVehiculoActual());
     }
 
-    @Test
-    void atenderProximoVehiculo_asignaAUnTalleristaLibreYNoAUnoOcupado() {
+    public void testAtenderProximoVehiculo_asignaAUnTalleristaLibreYNoAUnoOcupado() {
         Tallerista ocupado = agregarTallerista("T01");
         ocupado.asignar(crearVehiculo("YYY0000", NIVEL_NORMAL));
         Tallerista libre = agregarTallerista("T02");
@@ -116,8 +115,7 @@ class TallerTest {
 
     // ---------- registrarFallaAdicional ----------
 
-    @Test
-    void registrarFallaAdicional_agregaLaTareaAlVehiculoEnCola() {
+    public void testRegistrarFallaAdicional_agregaLaTareaAlVehiculoEnCola() {
         Vehiculo vehiculo = crearVehiculo("AAA1111", NIVEL_NORMAL);
         taller.registrarVehiculo(vehiculo);
         Tarea falla = new Tarea("Ruido en freno delantero", TipoTarea.FALLA_ADICIONAL, LocalDate.now());
@@ -128,18 +126,20 @@ class TallerTest {
         assertEquals(falla, vehiculo.proximaTareaAResolver());
     }
 
-    @Test
-    void registrarFallaAdicional_patenteInexistente_lanzaExcepcion() {
+    public void testRegistrarFallaAdicional_patenteInexistente_lanzaExcepcion() {
         Tarea falla = new Tarea("Ruido", TipoTarea.FALLA_ADICIONAL, LocalDate.now());
 
-        assertThrows(NoSuchElementException.class,
-                () -> taller.registrarFallaAdicional("NOEXISTE", falla));
+        try {
+            taller.registrarFallaAdicional("NOEXISTE", falla);
+            fail("Debería lanzar NoSuchElementException");
+        } catch (NoSuchElementException e) {
+            // esperado
+        }
     }
 
     // ---------- marcarEsperaRepuesto / repuestoDisponible ----------
 
-    @Test
-    void marcarEsperaRepuesto_liberaAlTalleristaYCambiaElEstadoDelVehiculo() {
+    public void testMarcarEsperaRepuesto_liberaAlTalleristaYCambiaElEstadoDelVehiculo() {
         Tallerista tallerista = agregarTallerista("T01");
         Vehiculo vehiculo = crearVehiculo("AAA1111", NIVEL_NORMAL);
         taller.registrarVehiculo(vehiculo);
@@ -151,14 +151,16 @@ class TallerTest {
         assertEquals(EstadoVehiculo.ESPERANDO_REPUESTO, vehiculo.getEstado());
     }
 
-    @Test
-    void marcarEsperaRepuesto_siNingunTalleristaLoAtiende_lanzaExcepcion() {
-        assertThrows(NoSuchElementException.class,
-                () -> taller.marcarEsperaRepuesto("NOEXISTE"));
+    public void testMarcarEsperaRepuesto_siNingunTalleristaLoAtiende_lanzaExcepcion() {
+        try {
+            taller.marcarEsperaRepuesto("NOEXISTE");
+            fail("Debería lanzar NoSuchElementException");
+        } catch (NoSuchElementException e) {
+            // esperado
+        }
     }
 
-    @Test
-    void repuestoDisponible_reincorporaElVehiculoALaColaDeEspera() {
+    public void testRepuestoDisponible_reincorporaElVehiculoALaColaDeEspera() {
         agregarTallerista("T01");
         Vehiculo vehiculo = crearVehiculo("AAA1111", NIVEL_NORMAL);
         taller.registrarVehiculo(vehiculo);
@@ -174,16 +176,18 @@ class TallerTest {
         assertEquals(vehiculo, asignado.getVehiculoActual());
     }
 
-    @Test
-    void repuestoDisponible_patenteInexistente_lanzaExcepcion() {
-        assertThrows(NoSuchElementException.class,
-                () -> taller.repuestoDisponible("NOEXISTE"));
+    public void testRepuestoDisponible_patenteInexistente_lanzaExcepcion() {
+        try {
+            taller.repuestoDisponible("NOEXISTE");
+            fail("Debería lanzar NoSuchElementException");
+        } catch (NoSuchElementException e) {
+            // esperado
+        }
     }
 
     // ---------- finalizarVehiculo ----------
 
-    @Test
-    void finalizarVehiculo_marcaEntregadoYLoMueveAlHistorial() {
+    public void testFinalizarVehiculo_marcaEntregadoYLoMueveAlHistorial() {
         Tallerista tallerista = agregarTallerista("T01");
         Vehiculo vehiculo = crearVehiculo("AAA1111", NIVEL_NORMAL);
         taller.registrarVehiculo(vehiculo);
@@ -197,21 +201,22 @@ class TallerTest {
         assertEquals(vehiculo, historialEntregados.obtener(0));
     }
 
-    @Test
-    void finalizarVehiculo_siNadieLoAtiende_lanzaExcepcion() {
-        assertThrows(NoSuchElementException.class,
-                () -> taller.finalizarVehiculo("NOEXISTE"));
+    public void testFinalizarVehiculo_siNadieLoAtiende_lanzaExcepcion() {
+        try {
+            taller.finalizarVehiculo("NOEXISTE");
+            fail("Debería lanzar NoSuchElementException");
+        } catch (NoSuchElementException e) {
+            // esperado
+        }
     }
 
     // ---------- tiempoPromedioEspera ----------
 
-    @Test
-    void tiempoPromedioEspera_sinEntregados_esCero() {
-        assertEquals(0.0, taller.tiempoPromedioEspera());
+    public void testTiempoPromedioEspera_sinEntregados_esCero() {
+        assertEquals(0.0, taller.tiempoPromedioEspera(), 0.001);
     }
 
-    @Test
-    void tiempoPromedioEspera_calculaElPromedioEnDias() {
+    public void testTiempoPromedioEspera_calculaElPromedioEnDias() {
         agregarTallerista("T01");
         agregarTallerista("T02");
 
@@ -230,8 +235,8 @@ class TallerTest {
     }
 
     private Vehiculo crearVehiculoConIngreso(String patente, LocalDate fechaIngreso) {
-        TDAPila<Tarea> tareasPendientes = new PilaEnlazada<>();
-        TDALista<Tarea> historial = new ListaEnlazada<>();
+        TDAPila<Tarea> tareasPendientes = new Pila<>();
+        TDALista<Tarea> historial = new Lista<>();
         return new Vehiculo(patente, "Chevrolet", "Onix", 2020, "Juan Dueño",
                 TipoIngreso.FALLA_INFORMADA, NIVEL_NORMAL, fechaIngreso,
                 tareasPendientes, historial);
@@ -239,8 +244,7 @@ class TallerTest {
 
     // ---------- vehiculosMasUrgentes ----------
 
-    @Test
-    void vehiculosMasUrgentes_devuelveOrdenadosDeMayorAMenorUrgencia() {
+    public void testVehiculosMasUrgentes_devuelveOrdenadosDeMayorAMenorUrgencia() {
         taller.registrarVehiculo(crearVehiculo("AAA1111", 2));
         taller.registrarVehiculo(crearVehiculo("BBB2222", 9));
         taller.registrarVehiculo(crearVehiculo("CCC3333", 5));
@@ -253,8 +257,7 @@ class TallerTest {
         assertEquals("AAA1111", masUrgentes.obtener(2).getPatente());
     }
 
-    @Test
-    void vehiculosMasUrgentes_respetaElLimiteN() {
+    public void testVehiculosMasUrgentes_respetaElLimiteN() {
         taller.registrarVehiculo(crearVehiculo("AAA1111", 1));
         taller.registrarVehiculo(crearVehiculo("BBB2222", 9));
         taller.registrarVehiculo(crearVehiculo("CCC3333", 5));
@@ -265,8 +268,7 @@ class TallerTest {
         assertEquals("BBB2222", top1.obtener(0).getPatente());
     }
 
-    @Test
-    void vehiculosMasUrgentes_incluyeALosQueEsperanRepuesto() {
+    public void testVehiculosMasUrgentes_incluyeALosQueEsperanRepuesto() {
         agregarTallerista("T01");
         Vehiculo enEspera = crearVehiculo("AAA1111", 2);
         Vehiculo esperandoRepuestoUrgente = crearVehiculo("BBB2222", 9);
@@ -282,8 +284,12 @@ class TallerTest {
         assertEquals("BBB2222", masUrgentes.obtener(0).getPatente());
     }
 
-    @Test
-    void vehiculosMasUrgentes_conNNegativo_lanzaExcepcion() {
-        assertThrows(IllegalArgumentException.class, () -> taller.vehiculosMasUrgentes(-1));
+    public void testVehiculosMasUrgentes_conNNegativo_lanzaExcepcion() {
+        try {
+            taller.vehiculosMasUrgentes(-1);
+            fail("Debería lanzar IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // esperado
+        }
     }
 }
