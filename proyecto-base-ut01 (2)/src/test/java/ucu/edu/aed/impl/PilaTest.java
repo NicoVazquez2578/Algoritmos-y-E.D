@@ -1,8 +1,8 @@
-package ucu.edu;
+package ucu.edu.aed.impl;
+
+import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
-import ucu.edu.aed.impl.Pila;
-import java.util.NoSuchElementException;
 
 public class PilaTest extends TestCase {
 

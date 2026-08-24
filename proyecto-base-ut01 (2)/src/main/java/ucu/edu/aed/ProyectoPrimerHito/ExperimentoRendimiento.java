@@ -20,7 +20,7 @@ public class ExperimentoRendimiento {
     private static final int REPETICIONES = 15;
 
     public static void main(String[] args) {
-        // Warmup: se descarta, es para que el JIT compile antes de medir en serio.
+        
         for (int n : TAMANIOS) {
             medir(false, n);
             medir(true, n);
@@ -35,7 +35,6 @@ public class ExperimentoRendimiento {
         }
     }
 
-    /** Promedio, en nanosegundos, de quitarPorPatente() sobre el ultimo vehiculo agregado. */
     private static long medir(boolean usarV2, int n) {
         String patenteBuscada = "V" + (n - 1);
         long total = 0;

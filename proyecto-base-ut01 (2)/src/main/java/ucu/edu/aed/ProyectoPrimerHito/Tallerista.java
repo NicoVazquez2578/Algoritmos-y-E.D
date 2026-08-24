@@ -1,9 +1,9 @@
 package ucu.edu.aed.ProyectoPrimerHito;
-/**
- * Representa a un tallerista (mecánico) del taller.
- *
- * Un tallerista puede estar disponible o estar ocupado atendiendo
- * un único vehículo a la vez (vehiculoActual).
+/*
+  Representa a un tallerista (mecánico) del taller.
+ 
+  Un tallerista puede estar disponible o estar ocupado atendiendo
+  un único vehículo a la vez (vehiculoActual).
  */
 public class Tallerista {
 
@@ -19,16 +19,16 @@ public class Tallerista {
         this.vehiculoActual = null; // al crearse, no está atendiendo nada
     }
 
-    /**
-     * Un tallerista está disponible si no tiene un vehículo asignado.
+    /*
+      Un tallerista está disponible si no tiene un vehículo asignado.
      */
     public boolean estaDisponible() {
         return this.vehiculoActual == null;
     }
 
-    /**
-     * Asigna un vehículo a este tallerista.
-     * Precondición: el tallerista debe estar disponible.
+    /*
+      Asigna un vehículo a este tallerista.
+      Precondición: el tallerista debe estar disponible.
      */
     public void asignar(Vehiculo vehiculo) {
         if (!estaDisponible()) {
@@ -40,14 +40,12 @@ public class Tallerista {
         this.vehiculoActual = vehiculo;
     }
 
-    /**
-     * Libera al tallerista, quedando disponible para un nuevo vehículo.
+    /*
+      Libera al tallerista, quedando disponible para un nuevo vehículo.
      */
     public void liberar() {
         this.vehiculoActual = null;
     }
-
-    // --- Getters (útiles para consultas del Taller, ej. buscar por id) ---
 
     public String getId() {
         return id;
@@ -71,7 +69,7 @@ public class Tallerista {
                 "id='" + id + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", especialidad='" + especialidad + '\'' +
-                ", disponible=" + estaDisponible() +
+                ", disponible=" + "y" + estaDisponible() +
                 '}';
     }
 }
