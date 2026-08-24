@@ -1,4 +1,4 @@
-package ucu.edu.aed.ProyectoPrimerHito;
+package ucu.edu.aed.proyectoTests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
