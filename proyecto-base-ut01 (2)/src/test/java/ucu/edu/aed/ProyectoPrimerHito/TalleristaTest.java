@@ -1,64 +1,65 @@
-package ucu.edu.aed.proyectoTests;
+package ucu.edu.aed.ProyectoPrimerHito;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import junit.framework.TestCase;
+import ucu.edu.aed.impl.Lista;
+import ucu.edu.aed.impl.Pila;
 import ucu.edu.aed.tda.TDALista;
 import ucu.edu.aed.tda.TDAPila;
 
-// TODO: reemplazar por los nombres reales de tus implementaciones concretas
-// de TDAPila y TDALista hechas en el Desafío 1.
-import ucu.edu.aed.tda.impl.PilaEnlazada;
-import ucu.edu.aed.tda.impl.ListaEnlazada;
-
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class TalleristaTest {
+public class TalleristaTest extends TestCase {
 
     private Tallerista tallerista;
     private Vehiculo vehiculo;
 
-    @BeforeEach
-    void setUp() {
+    @Override
+    protected void setUp() {
         tallerista = new Tallerista("T01", "Ana Pérez", "Motor");
         vehiculo = crearVehiculo("AAA1234", 3);
     }
 
     private Vehiculo crearVehiculo(String patente, int nivelUrgencia) {
-        TDAPila<Tarea> tareasPendientes = new PilaEnlazada<>();
-        TDALista<Tarea> historial = new ListaEnlazada<>();
+        TDAPila<Tarea> tareasPendientes = new Pila<>();
+        TDALista<Tarea> historial = new Lista<>();
         return new Vehiculo(patente, "Chevrolet", "Onix", 2020, "Juan Dueño",
                 TipoIngreso.FALLA_INFORMADA, nivelUrgencia, LocalDate.now(),
                 tareasPendientes, historial);
     }
 
-    @Test
-    void alCrearse_estaDisponible() {
+    // --- estaDisponible / getVehiculoActual ---
+
+    public void testAlCrearse_estaDisponible() {
         assertTrue(tallerista.estaDisponible());
         assertNull(tallerista.getVehiculoActual());
     }
 
-    @Test
-    void asignar_ocupaAlTalleristaConElVehiculo() {
+    // --- asignar ---
+
+    public void testAsignar_ocupaAlTalleristaConElVehiculo() {
         tallerista.asignar(vehiculo);
 
         assertFalse(tallerista.estaDisponible());
         assertEquals(vehiculo, tallerista.getVehiculoActual());
     }
 
-    @Test
-    void asignar_siYaEstaOcupado_lanzaExcepcion() {
+    public void testAsignar_siYaEstaOcupado_lanzaExcepcion() {
         tallerista.asignar(vehiculo);
         Vehiculo otroVehiculo = crearVehiculo("BBB5678", 1);
 
-        assertThrows(IllegalStateException.class, () -> tallerista.asignar(otroVehiculo));
+        try {
+            tallerista.asignar(otroVehiculo);
+            fail("Debería lanzar IllegalStateException");
+        } catch (IllegalStateException e) {
+            // esperado
+        }
         // El vehículo original no debe haberse perdido/reemplazado
         assertEquals(vehiculo, tallerista.getVehiculoActual());
     }
 
-    @Test
-    void liberar_dejaAlTalleristaDisponibleDeNuevo() {
+    // --- liberar ---
+
+    public void testLiberar_dejaAlTalleristaDisponibleDeNuevo() {
         tallerista.asignar(vehiculo);
 
         tallerista.liberar();
@@ -67,24 +68,23 @@ class TalleristaTest {
         assertNull(tallerista.getVehiculoActual());
     }
 
-    @Test
-    void liberar_sinTenerVehiculoAsignado_noRompeNada() {
-        assertDoesNotThrow(() -> tallerista.liberar());
+    public void testLiberar_sinTenerVehiculoAsignado_noRompeNada() {
+        tallerista.liberar();
         assertTrue(tallerista.estaDisponible());
     }
 
-    @Test
-    void despuesDeLiberar_puedeAsignarseOtroVehiculo() {
+    public void testDespuesDeLiberar_puedeAsignarseOtroVehiculo() {
         tallerista.asignar(vehiculo);
         tallerista.liberar();
         Vehiculo otroVehiculo = crearVehiculo("BBB5678", 1);
 
-        assertDoesNotThrow(() -> tallerista.asignar(otroVehiculo));
+        tallerista.asignar(otroVehiculo);
         assertEquals(otroVehiculo, tallerista.getVehiculoActual());
     }
 
-    @Test
-    void getters_devuelvenLosValoresDelConstructor() {
+    // --- getters ---
+
+    public void testGetters_devuelvenLosValoresDelConstructor() {
         assertEquals("T01", tallerista.getId());
         assertEquals("Ana Pérez", tallerista.getNombre());
         assertEquals("Motor", tallerista.getEspecialidad());
