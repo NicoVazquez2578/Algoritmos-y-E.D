@@ -1,67 +1,90 @@
 package ucu.edu.aed.ProyectoPrimerHito;
 
-/**
- * Representa a un tallerista y el vehículo que tiene asignado.
- */
-public class Tallerista {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import ucu.edu.aed.tda.TDALista;
+import ucu.edu.aed.tda.TDAPila;
 
-    private String id;
-    private String nombre;
-    private String especialidad;
-    private Vehiculo vehiculoActual;
+import ucu.edu.aed.impl.Pila;
+import ucu.edu.aed.impl.Lista;
 
-    public Tallerista(String id, String nombre, String especialidad) {
-        this.id = id;
-        this.nombre = nombre;
-        this.especialidad = especialidad;
-        this.vehiculoActual = null;
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class TalleristaTest {
+
+    private Tallerista tallerista;
+    private Vehiculo vehiculo;
+
+    @BeforeEach
+    void setUp() {
+        tallerista = new Tallerista("T01", "Ana Pérez", "Motor");
+        vehiculo = crearVehiculo("AAA1234", 3);
     }
 
-    public boolean estaDisponible() {
-        return this.vehiculoActual == null;
+    private Vehiculo crearVehiculo(String patente, int nivelUrgencia) {
+        TDAPila<Tarea> tareasPendientes = new Pila<>();
+        TDALista<Tarea> historial = new Lista<>();
+        return new Vehiculo(patente, "Chevrolet", "Onix", 2020, "Juan Dueño",
+                TipoIngreso.FALLA_INFORMADA, nivelUrgencia, LocalDate.now(),
+                tareasPendientes, historial);
     }
 
-    /**
-     * Asigna un vehículo al tallerista.
-     * @throws IllegalStateException si el tallerista ya está ocupado.
-     */
-    public void asignar(Vehiculo vehiculo) {
-        if (!estaDisponible()) {
-            throw new IllegalStateException(
-                "El tallerista " + id + " ya está atendiendo el vehículo con patente "
-                + vehiculoActual.getPatente()
-            );
-        }
-        this.vehiculoActual = vehiculo;
+    @Test
+    void alCrearse_estaDisponible() {
+        assertTrue(tallerista.estaDisponible());
+        assertNull(tallerista.getVehiculoActual());
     }
 
-    public void liberar() {
-        this.vehiculoActual = null;
+    @Test
+    void asignar_ocupaAlTalleristaConElVehiculo() {
+        tallerista.asignar(vehiculo);
+
+        assertFalse(tallerista.estaDisponible());
+        assertEquals(vehiculo, tallerista.getVehiculoActual());
     }
 
-    public String getId() {
-        return id;
+    @Test
+    void asignar_siYaEstaOcupado_lanzaExcepcion() {
+        tallerista.asignar(vehiculo);
+        Vehiculo otroVehiculo = crearVehiculo("BBB5678", 1);
+
+        assertThrows(IllegalStateException.class, () -> tallerista.asignar(otroVehiculo));
+        // El vehículo original no debe haberse perdido/reemplazado
+        assertEquals(vehiculo, tallerista.getVehiculoActual());
     }
 
-    public String getNombre() {
-        return nombre;
+    @Test
+    void liberar_dejaAlTalleristaDisponibleDeNuevo() {
+        tallerista.asignar(vehiculo);
+
+        tallerista.liberar();
+
+        assertTrue(tallerista.estaDisponible());
+        assertNull(tallerista.getVehiculoActual());
     }
 
-    public String getEspecialidad() {
-        return especialidad;
+    @Test
+    void liberar_sinTenerVehiculoAsignado_noRompeNada() {
+        assertDoesNotThrow(() -> tallerista.liberar());
+        assertTrue(tallerista.estaDisponible());
     }
 
-    public Vehiculo getVehiculoActual() {
-        return vehiculoActual;
+    @Test
+    void despuesDeLiberar_puedeAsignarseOtroVehiculo() {
+        tallerista.asignar(vehiculo);
+        tallerista.liberar();
+        Vehiculo otroVehiculo = crearVehiculo("BBB5678", 1);
+
+        assertDoesNotThrow(() -> tallerista.asignar(otroVehiculo));
+        assertEquals(otroVehiculo, tallerista.getVehiculoActual());
     }
 
-    @Override
-    public String toString() {
-        return "Tallerista{" +
-                "id='" + id + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", especialidad='" + especialidad + '\'' +
-                ", disponible=" + estaDisponible() +
-                '}';
+    @Test
+    void getters_devuelvenLosValoresDelConstructor() {
+        assertEquals("T01", tallerista.getId());
+        assertEquals("Ana Pérez", tallerista.getNombre());
+        assertEquals("Motor", tallerista.getEspecialidad());
     }
 }
