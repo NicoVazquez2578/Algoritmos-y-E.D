@@ -4,9 +4,9 @@ import java.util.Objects;
 
 import ucu.edu.aed.tda.TDALista;
 
-/**
- * Version simple de IGestorEsperaRepuestos: busca por patente recorriendo
- * la lista de principio a fin. Complejidad O(n).
+/*
+  Version simple de IGestorEsperaRepuestos: busca por patente recorriendo
+  la lista de principio a fin. Complejidad O(n).
  */
 public class GestorEsperaRepuestos implements IGestorEsperaRepuestos {
 

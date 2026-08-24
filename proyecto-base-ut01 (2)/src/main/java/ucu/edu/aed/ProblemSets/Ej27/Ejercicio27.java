@@ -1,4 +1,4 @@
-package ucu.edu.aed.ProblemSets;
+package ucu.edu.aed.ProblemSets.Ej27;
 
 import java.util.NoSuchElementException;
 

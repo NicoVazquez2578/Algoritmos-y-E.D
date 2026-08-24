@@ -1,7 +1,7 @@
 package ucu.edu.aed.ProyectoPrimerHito;
 
-/**
- * Estados posibles de un {@link Vehiculo} dentro del ciclo de vida del taller.
+/*
+  Estados posibles de un Vehiculo dentro del ciclo de vida del taller.
  */
 public enum EstadoVehiculo {
     EN_ESPERA,
