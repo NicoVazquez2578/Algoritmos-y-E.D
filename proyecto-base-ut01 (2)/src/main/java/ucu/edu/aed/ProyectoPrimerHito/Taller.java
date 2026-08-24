@@ -11,31 +11,11 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
- * Coordina la gestión del taller mecánico: ingreso de vehículos, atención
- * por parte de los talleristas, espera de repuestos y entrega final.
- *
- * <p>Todas las estructuras se reciben por inyección en el constructor
- * (mismo criterio que se usó en {@link Vehiculo}): esta clase conoce los
- * TDA, no las implementaciones concretas que el grupo elija por detrás.</p>
- *
- * <h2>Decisiones de diseño a revisar con el equipo</h2>
- * <ul>
- *   <li><b>Urgencia:</b> todo vehículo registrado entra a {@code colaEspera}
- *       (orden de llegada). Si su {@code nivelUrgencia} supera
- *       {@link #UMBRAL_URGENCIA}, además entra a {@code colaUrgencias}.
- *       Al atender, se prioriza lo urgente por sobre el orden de llegada.
- *       Ajustar el umbral o el criterio si no representa lo que quieren
- *       modelar.</li>
- *   <li><b>tiempoPromedioEspera():</b> como {@code Vehiculo} no guarda una
- *       fecha de entrega, se aproxima usando {@code fechaIngreso} hasta
- *       "hoy" para los vehículos ya entregados. Para un cálculo exacto
- *       convendría agregar un campo {@code fechaEntrega} a {@code Vehiculo}
- *       y setearlo en {@link #finalizarVehiculo(String)}.</li>
- * </ul>
+ * Gestiona el flujo del taller mecánico: ingreso de vehículos, asignación
+ * a talleristas, espera de repuestos y entrega final.
  */
 public class Taller {
 
-    /** A partir de qué nivel de urgencia un vehículo se considera prioritario. */
     private static final int UMBRAL_URGENCIA = 8;
 
     private final TDACola<Vehiculo> colaEspera;
@@ -58,33 +38,20 @@ public class Taller {
 
     /**
      * Registra el ingreso de un vehículo al taller.
-     *
-     * <p>Complejidad: O(1) para {@code poneEnCola}; O(log n) o O(n) para
-     * {@code encolar} en la cola de prioridad si aplica, según cómo la
-     * implementen (heap vs. lista ordenada).</p>
      */
     public void registrarVehiculo(Vehiculo vehiculo) {
         Objects.requireNonNull(vehiculo, "El vehículo no puede ser nulo.");
         colaEspera.poneEnCola(vehiculo);
         if (vehiculo.getNivelUrgencia() >= UMBRAL_URGENCIA) {
-            // Convención: a menor valor numérico, mayor prioridad (según
-            // el javadoc de TDAColaPrioridad), por eso invertimos el signo.
             colaUrgencias.encolar(vehiculo, -vehiculo.getNivelUrgencia());
         }
     }
 
     /**
-     * Asigna el próximo vehículo a atender a un tallerista disponible,
-     * priorizando urgencias por sobre el orden de llegada.
-     *
-     * <p>Complejidad: O(n) por el {@code buscar} de un tallerista libre
-     * (recorre la lista de talleristas); O(n) por el {@code remover(T)}
-     * sobre {@code colaEspera} cuando la próxima atención viene de
-     * {@code colaUrgencias} (hay que ubicar ese vehículo dentro de la
-     * cola normal para sacarlo también de ahí).</p>
+     * Asigna el próximo vehículo a un tallerista libre, priorizando urgencias.
      *
      * @throws IllegalStateException si no hay talleristas disponibles
-     * @throws NoSuchElementException si no hay vehículos esperando
+     * @throws NoSuchElementException si no hay vehículos en espera
      */
     public Tallerista atenderProximoVehiculo() {
         Tallerista libre = talleristas.buscar(Tallerista::estaDisponible);
@@ -95,7 +62,7 @@ public class Taller {
         Vehiculo siguiente;
         if (!colaUrgencias.esVacio()) {
             siguiente = colaUrgencias.desencolarMasPrioritario();
-            colaEspera.remover(siguiente); // TDACola extiende TDALista -> remover por valor
+            colaEspera.remover(siguiente);
         } else {
             if (colaEspera.esVacio()) {
                 throw new NoSuchElementException("No hay vehículos esperando ser atendidos.");
@@ -109,11 +76,7 @@ public class Taller {
     }
 
     /**
-     * Registra una falla adicional detectada durante la inspección de un
-     * vehículo que actualmente está siendo atendido, en espera o en cola.
-     *
-     * <p>Complejidad: O(n) para ubicar el vehículo (recorre hasta 3
-     * estructuras); O(1) para apilar la tarea ({@link Vehiculo#agregarTareaPendiente}).</p>
+     * Registra una nueva falla en un vehículo que ya está ingresado.
      */
     public void registrarFallaAdicional(String patente, Tarea tarea) {
         Vehiculo vehiculo = buscarVehiculoActivo(patente);
@@ -124,10 +87,7 @@ public class Taller {
     }
 
     /**
-     * Pausa la reparación de un vehículo por falta de repuesto, liberando
-     * al tallerista que lo atendía para que pueda tomar otro trabajo.
-     *
-     * <p>Complejidad: O(n) para ubicar al tallerista que lo atiende.</p>
+     * Pausa la reparación por falta de repuesto y libera al tallerista.
      */
     public void marcarEsperaRepuesto(String patente) {
         Tallerista tallerista = buscarTalleristaQueAtiende(patente);
@@ -141,11 +101,7 @@ public class Taller {
     }
 
     /**
-     * Marca que llegó el repuesto de un vehículo, reincorporándolo a la
-     * cola correspondiente para que un tallerista continúe el trabajo.
-     *
-     * <p>Complejidad: la del {@link IGestorEsperaRepuestos} inyectado
-     * (O(n) con {@code GestorEsperaRepuestosV1}).</p>
+     * Reincorpora el vehículo a la cola de espera tras recibir el repuesto.
      */
     public void repuestoDisponible(String patente) {
         Vehiculo vehiculo = gestorEsperaRepuestos.quitarPorPatente(patente);
@@ -158,11 +114,7 @@ public class Taller {
     }
 
     /**
-     * Cierra el trabajo sobre un vehículo: libera al tallerista, lo marca
-     * como entregado y lo mueve al historial.
-     *
-     * <p>Complejidad: O(n) para ubicar al tallerista; O(1) amortizado
-     * para agregar al historial (según implementación de TDALista).</p>
+     * Finaliza el trabajo: libera al tallerista y mueve el vehículo al historial.
      */
     public void finalizarVehiculo(String patente) {
         Tallerista tallerista = buscarTalleristaQueAtiende(patente);
@@ -176,11 +128,7 @@ public class Taller {
     }
 
     /**
-     * Calcula el tiempo promedio (en días) entre el ingreso y "hoy" para
-     * los vehículos ya entregados. Ver nota de diseño en el javadoc de
-     * la clase sobre la aproximación usada.
-     *
-     * <p>Complejidad: O(n), recorre todo el historial.</p>
+     * Calcula el promedio de días en el taller para los vehículos entregados.
      */
     public double tiempoPromedioEspera() {
         if (historialEntregados.esVacio()) {
@@ -196,11 +144,7 @@ public class Taller {
     }
 
     /**
-     * Retorna hasta {@code n} vehículos (entre los que están en cola y los
-     * que esperan repuesto) ordenados de mayor a menor nivel de urgencia.
-     *
-     * <p>Complejidad: O(m log m), siendo {@code m} la cantidad total de
-     * vehículos considerados, dominada por {@code ordenar}.</p>
+     * Retorna los 'n' vehículos más urgentes entre los que están esperando reparación o repuestos.
      */
     public TDALista<Vehiculo> vehiculosMasUrgentes(int n) {
         if (n < 0) {
@@ -210,13 +154,8 @@ public class Taller {
         Comparator<Vehiculo> porUrgenciaDesc =
                 Comparator.comparingInt(Vehiculo::getNivelUrgencia).reversed();
 
-        // Partimos de colaEspera.ordenar(...): nos devuelve una nueva
-        // TDALista ya del tipo concreto que use el grupo, sin que esta
-        // clase necesite instanciar esa implementación directamente.
         TDALista<Vehiculo> resultado = colaEspera.ordenar(porUrgenciaDesc);
 
-        // Sumamos también los que están esperando repuesto: siguen
-        // "dentro" del taller aunque no estén en colaEspera.
         TDALista<Vehiculo> enEsperaRepuesto = gestorEsperaRepuestos.listar();
         for (int i = 0; i < enEsperaRepuesto.tamaño(); i++) {
             resultado.agregar(enEsperaRepuesto.obtener(i));
@@ -229,7 +168,7 @@ public class Taller {
         return resultado;
     }
 
-    // ---- Helpers privados de búsqueda ----
+    // Auxiliares de búsqueda
 
     private Vehiculo buscarVehiculoActivo(String patente) {
         Vehiculo enCola = colaEspera.buscar(v -> v.getPatente().equals(patente));
