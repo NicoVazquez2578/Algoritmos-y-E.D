@@ -20,6 +20,12 @@ public interface IGestorEsperaRepuestos {
     void agregar(Vehiculo vehiculo);
 
     /*
+      Busca y retorna el vehiculo con esa patente sin removerlo de la espera.
+      Si no se encuentra, devuelve null.
+     */
+    Vehiculo buscarPorPatente(String patente);
+
+    /*
       Busca el vehiculo con esa patente, lo saca de la espera y lo
       devuelve. Si no lo encuentra, devuelve null.
      */
