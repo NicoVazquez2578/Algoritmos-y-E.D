@@ -1,7 +1,7 @@
 package ucu.edu.aed.tda.Arboles.Impl;
 import ucu.edu.aed.tda.Arboles.TDAElemento;
 
-public class AVL <T extends Comparable<T>> extends ArbolBinario<T>{
+public class AVL <T extends Comparable<T>> extends ArbolBinarioBusqueda<T>{
 
     @Override
     @SuppressWarnings("unchecked")

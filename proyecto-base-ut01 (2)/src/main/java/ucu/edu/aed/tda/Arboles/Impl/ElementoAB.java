@@ -109,7 +109,7 @@ public class ElementoAB <T extends Comparable <T>> implements TDAElemento<T> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    //@SuppressWarnings("unchecked")
     public boolean insertar(Comparable<T> nuevoDato) {
         if (nuevoDato.compareTo(this.dato) > 0){
             if(this.hijoDerecho == null){
