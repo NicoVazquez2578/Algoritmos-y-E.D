@@ -24,6 +24,17 @@ public class Vehiculo {
     private final TDAPila<Tarea> tareasPendientes;
     private final TDALista<Tarea> historialTrabajos;
 
+    // ── Hito 2: campos nuevos ──────────────────────────────────────────
+    // La OrdenTrabajo es el árbol jerárquico de tareas del vehículo.
+    // Es null hasta que se registra el primer trabajo (se inicializa llamando a iniciarOrden).
+    private OrdenTrabajo ordenTrabajo;
+
+    // Fecha en que el cliente necesita el vehículo. Null si no hay compromiso.
+    // Si está presente, el vehículo se atiende por este criterio (en el Montículo)
+    // en lugar de por orden de llegada o urgencia.
+    private LocalDate fechaEntregaComprometida;
+
+    // Constructor original del Hito 1 — no se modifica para no romper los tests existentes.
     public Vehiculo(String patente, String marca, String modelo, int anio, String propietario,
                      TipoIngreso tipoIngreso, int nivelUrgencia, LocalDate fechaIngreso,
                      TDAPila<Tarea> tareasPendientes, TDALista<Tarea> historialTrabajos) {
@@ -41,6 +52,27 @@ public class Vehiculo {
         this.estado = EstadoVehiculo.EN_ESPERA;
         this.tareasPendientes = tareasPendientes;
         this.historialTrabajos = historialTrabajos;
+        this.ordenTrabajo = null;
+        this.fechaEntregaComprometida = null;
+    }
+
+    // ── Métodos Hito 2 ─────────────────────────────────────────────────
+
+    /**
+     * Crea la OrdenTrabajo del vehículo con la tarea principal como raíz.
+     * Debe llamarse cuando el tallerista empieza a trabajar en el vehículo
+     * y ya sabe cuál es el problema principal.
+     */
+    public void iniciarOrden(Tarea tareaRaiz) {
+        this.ordenTrabajo = new OrdenTrabajo(tareaRaiz);
+    }
+
+    public OrdenTrabajo getOrdenTrabajo() { return ordenTrabajo; }
+
+    public LocalDate getFechaEntregaComprometida() { return fechaEntregaComprometida; }
+
+    public void setFechaEntregaComprometida(LocalDate fecha) {
+        this.fechaEntregaComprometida = fecha;
     }
 
     public void agregarTareaPendiente(Tarea tarea) {
