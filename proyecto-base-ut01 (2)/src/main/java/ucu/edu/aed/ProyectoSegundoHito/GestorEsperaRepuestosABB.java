@@ -1,11 +1,12 @@
 package ucu.edu.aed.ProyectoSegundoHito;
 
 import java.util.Objects;
+
 import ucu.edu.aed.ProyectoPrimerHito.IGestorEsperaRepuestos;
 import ucu.edu.aed.ProyectoPrimerHito.Vehiculo;
 import ucu.edu.aed.impl.Lista;
-import ucu.edu.aed.tda.Arboles.TDAArbolBinario;
-import ucu.edu.aed.tda.Arboles.Impl.ArbolBinarioBusqueda; // Usa la clase de tu compañero
+import ucu.edu.aed.tda.Arboles.Impl.ArbolBinarioBusqueda;
+import ucu.edu.aed.tda.Arboles.TDAArbolBinario; // Usa la clase de tu compañero
 import ucu.edu.aed.tda.TDALista;
 
 /**
