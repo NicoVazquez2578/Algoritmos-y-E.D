@@ -1,5 +1,0 @@
-ISBN001,El principito,15.50,3
-ISBN002,Algoritmos y estructuras de datos,45.00,2
-ISBN003,Clean Code,38.00,4
-ISBN004,Don Quijote de la Mancha,22.00,5
-ISBN005,Matematica discreta,55.00,2
