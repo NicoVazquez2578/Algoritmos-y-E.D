@@ -108,4 +108,11 @@ public interface TDAArbolBinario<T> {
      * Devuelve la cantidad de nodos que NO son hojas
      */
     int cantidadNodosInternos();
+
+    /**
+    * Recorre el árbol por niveles (BFS), de raíz a hojas y de izquierda a
+    * derecha dentro de cada nivel. Debe implementarse con el TDA Cola del
+    * Hito 1.
+    */
+    void recorridoPorNiveles(Consumer<T> consumidor);
 }

@@ -63,6 +63,16 @@ public class GestorEsperaRepuestosV2 implements IGestorEsperaRepuestos {
         indicePorPatente.put(vehiculo.getPatente(), nuevo);
     }
 
+    /**
+     * Complejidad: O(1). Consulta directamente la tabla de hash por la clave patente.
+     */
+    @Override
+    public Vehiculo buscarPorPatente(String patente) {
+        Objects.requireNonNull(patente, "La patente no puede ser nula.");
+        Nodo nodo = indicePorPatente.get(patente);
+        return (nodo != null) ? nodo.dato : null;
+    }
+
     /*
       Complejidad: O(1). Ubica el nodo por el indice (sin recorrer
       nada) y lo desenlaza ajustando directamente los punteros vecinos.
