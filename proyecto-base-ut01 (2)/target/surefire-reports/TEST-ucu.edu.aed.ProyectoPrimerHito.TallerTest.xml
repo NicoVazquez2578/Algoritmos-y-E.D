@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.023" tests="19" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.024" tests="19" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="26"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="UY"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-26.0.2\bin"/>
-    <property name="sun.java.command" value="C:\Users\joaqu\AppData\Local\Temp\surefire8746834424962850718\surefirebooter-20260908163821466_3.jar C:\Users\joaqu\AppData\Local\Temp\surefire8746834424962850718 2026-09-08T16-38-21_261-jvmRun1 surefire-20260908163821466_1tmp surefire_0-20260908163821466_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\joaqu\AppData\Local\Temp\surefire18301282777770379122\surefirebooter-20260908222656791_3.jar C:\Users\joaqu\AppData\Local\Temp\surefire18301282777770379122 2026-09-08T22-26-56_610-jvmRun1 surefire-20260908222656791_1tmp surefire_0-20260908222656791_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\joaqu\OneDrive\Desktop\Algoritmos\Proyecto1\Algoritmos-y-E.D\proyecto-base-ut01 (2)\target\test-classes;C:\Users\joaqu\OneDrive\Desktop\Algoritmos\Proyecto1\Algoritmos-y-E.D\proyecto-base-ut01 (2)\target\classes;C:\Users\joaqu\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\joaqu\AppData\Local\Temp\surefire8746834424962850718\surefirebooter-20260908163821466_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\joaqu\AppData\Local\Temp\surefire18301282777770379122\surefirebooter-20260908222656791_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="26.0.2+10-55"/>
@@ -59,23 +59,23 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="70.0"/>
   </properties>
-  <testcase name="testFinalizarVehiculo_marcaEntregadoYLoMueveAlHistorial" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.001"/>
-  <testcase name="testVehiculosMasUrgentes_incluyeALosQueEsperanRepuesto" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.006"/>
-  <testcase name="testVehiculosMasUrgentes_conNNegativo_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.001"/>
-  <testcase name="testRepuestoDisponible_patenteInexistente_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.002"/>
-  <testcase name="testFinalizarVehiculo_siNadieLoAtiende_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
-  <testcase name="testRegistrarFallaAdicional_agregaLaTareaAlVehiculoEnCola" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.005"/>
-  <testcase name="testTiempoPromedioEspera_sinEntregados_esCero" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
-  <testcase name="testTiempoPromedioEspera_calculaElPromedioEnDias" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.001"/>
   <testcase name="testVehiculosMasUrgentes_respetaElLimiteN" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
-  <testcase name="testMarcarEsperaRepuesto_siNingunTalleristaLoAtiende_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
+  <testcase name="testMarcarEsperaRepuesto_liberaAlTalleristaYCambiaElEstadoDelVehiculo" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.006"/>
+  <testcase name="testMarcarEsperaRepuesto_siNingunTalleristaLoAtiende_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.001"/>
   <testcase name="testAtenderProximoVehiculo_sinTalleristasDisponibles_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
-  <testcase name="testMarcarEsperaRepuesto_liberaAlTalleristaYCambiaElEstadoDelVehiculo" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.002"/>
-  <testcase name="testRegistrarFallaAdicional_patenteInexistente_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.002"/>
-  <testcase name="testAtenderProximoVehiculo_asignaAUnTalleristaLibreYNoAUnoOcupado" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
-  <testcase name="testAtenderProximoVehiculo_respetaOrdenDeLlegadaEntreVehiculosNormales" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
   <testcase name="testAtenderProximoVehiculo_sinVehiculosEnEspera_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.001"/>
-  <testcase name="testRepuestoDisponible_reincorporaElVehiculoALaColaDeEspera" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
-  <testcase name="testVehiculosMasUrgentes_devuelveOrdenadosDeMayorAMenorUrgencia" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.001"/>
+  <testcase name="testAtenderProximoVehiculo_respetaOrdenDeLlegadaEntreVehiculosNormales" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.001"/>
+  <testcase name="testRegistrarFallaAdicional_patenteInexistente_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.004"/>
+  <testcase name="testVehiculosMasUrgentes_devuelveOrdenadosDeMayorAMenorUrgencia" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
+  <testcase name="testAtenderProximoVehiculo_asignaAUnTalleristaLibreYNoAUnoOcupado" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
+  <testcase name="testRepuestoDisponible_reincorporaElVehiculoALaColaDeEspera" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.002"/>
   <testcase name="testAtenderProximoVehiculo_priorizaVehiculoUrgentePorSobreElOrdenDeLlegada" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
+  <testcase name="testTiempoPromedioEspera_calculaElPromedioEnDias" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
+  <testcase name="testTiempoPromedioEspera_sinEntregados_esCero" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.001"/>
+  <testcase name="testRepuestoDisponible_patenteInexistente_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
+  <testcase name="testVehiculosMasUrgentes_incluyeALosQueEsperanRepuesto" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.001"/>
+  <testcase name="testFinalizarVehiculo_siNadieLoAtiende_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
+  <testcase name="testFinalizarVehiculo_marcaEntregadoYLoMueveAlHistorial" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.001"/>
+  <testcase name="testVehiculosMasUrgentes_conNNegativo_lanzaExcepcion" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.0"/>
+  <testcase name="testRegistrarFallaAdicional_agregaLaTareaAlVehiculoEnCola" classname="ucu.edu.aed.ProyectoPrimerHito.TallerTest" time="0.001"/>
 </testsuite>

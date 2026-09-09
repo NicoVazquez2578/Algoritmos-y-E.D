@@ -3,48 +3,57 @@ package ucu.edu.aed.ProyectoSegundoHito;
 import java.util.Objects;
 import ucu.edu.aed.ProyectoPrimerHito.IGestorEsperaRepuestos;
 import ucu.edu.aed.ProyectoPrimerHito.Vehiculo;
+import ucu.edu.aed.impl.Lista;
+import ucu.edu.aed.tda.Arboles.TDAArbolBinario;
+import ucu.edu.aed.tda.Arboles.Impl.ArbolBinarioBusqueda; // Usa la clase de tu compañero
 import ucu.edu.aed.tda.TDALista;
 
 /**
  * Gestor de espera de repuestos optimizado con un Árbol Binario de Búsqueda (ABB).
- * Indexa los vehículos por su patente para buscar en O(log n) en vez de O(n).
+ * Indexa los vehículos por su patente (aprovechando Comparable en Vehiculo).
  */
 public class GestorEsperaRepuestosABB implements IGestorEsperaRepuestos {
 
-    private final ArbolBinarioBusqueda<String, Vehiculo> arbol;
+    private final TDAArbolBinario<Vehiculo> arbol;
 
     public GestorEsperaRepuestosABB() {
-        this.arbol = new ArbolBinarioBusqueda<>();
+        this(new ArbolBinarioBusqueda<>());
     }
 
-    // Costo: O(log n) promedio. Inserta el vehículo en el árbol usando su patente.
+    public GestorEsperaRepuestosABB(TDAArbolBinario<Vehiculo> arbol) {
+        this.arbol = Objects.requireNonNull(arbol, "El árbol no puede ser nulo.");
+    }
+
     @Override
     public void agregar(Vehiculo vehiculo) {
         Objects.requireNonNull(vehiculo, "El vehículo no puede ser nulo.");
-        arbol.insertar(vehiculo.getPatente(), vehiculo);
+        arbol.insertar(vehiculo);
     }
 
-    // Costo: O(log n) promedio. Busca por patente dividiendo el árbol a la mitad en cada paso.
     @Override
     public Vehiculo buscarPorPatente(String patente) {
         Objects.requireNonNull(patente, "La patente no puede ser nula.");
-        return arbol.buscar(patente);
+        return arbol.buscar(v -> patente.compareTo(v.getPatente()));
     }
 
-    // Costo: O(log n) promedio. Busca y saca el vehículo del árbol.
     @Override
     public Vehiculo quitarPorPatente(String patente) {
         Objects.requireNonNull(patente, "La patente no puede ser nula.");
-        return arbol.eliminar(patente);
+        Vehiculo encontrado = buscarPorPatente(patente);
+        if (encontrado != null) {
+            arbol.eliminar(v -> patente.compareTo(v.getPatente()));
+        }
+        return encontrado;
     }
 
-    // Costo: O(n). Recorre el árbol in-order y devuelve la lista de vehículos ordenados.
     @Override
     public TDALista<Vehiculo> listar() {
-        return arbol.listar();
+        TDALista<Vehiculo> lista = new Lista<>();
+        arbol.inOrder(lista::agregar);
+        return lista;
     }
 
     public int cantidadVehiculos() {
-        return arbol.tamaño();
+        return arbol.cantidadNodos();
     }
 }

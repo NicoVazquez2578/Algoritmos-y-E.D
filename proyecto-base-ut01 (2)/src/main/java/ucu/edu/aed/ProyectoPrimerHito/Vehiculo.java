@@ -9,7 +9,7 @@ import java.util.Objects;
 /*
  Representa un vehiculo registrado en el taller mecanico.
  */
-public class Vehiculo {
+public class Vehiculo implements Comparable<Vehiculo> {
 
     private final String patente;
     private String marca;
@@ -27,7 +27,7 @@ public class Vehiculo {
     public Vehiculo(String patente, String marca, String modelo, int anio, String propietario,
                      TipoIngreso tipoIngreso, int nivelUrgencia, LocalDate fechaIngreso,
                      TDAPila<Tarea> tareasPendientes, TDALista<Tarea> historialTrabajos) {
-        if (patente == null || patente.isBlank()) {
+        if (patente == null || patente.trim().isEmpty()) {
             throw new IllegalArgumentException("La patente no puede ser nula ni vacia.");
         }
         this.patente = patente;
@@ -126,6 +126,11 @@ public class Vehiculo {
     @Override
     public int hashCode() {
         return Objects.hash(patente);
+    }
+
+    @Override
+    public int compareTo(Vehiculo otro) {
+        return this.patente.compareTo(otro.patente);
     }
 
     @Override

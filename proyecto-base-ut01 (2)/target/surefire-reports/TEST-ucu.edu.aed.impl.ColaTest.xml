@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="UY"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-26.0.2\bin"/>
-    <property name="sun.java.command" value="C:\Users\joaqu\AppData\Local\Temp\surefire8746834424962850718\surefirebooter-20260908163821466_3.jar C:\Users\joaqu\AppData\Local\Temp\surefire8746834424962850718 2026-09-08T16-38-21_261-jvmRun1 surefire-20260908163821466_1tmp surefire_0-20260908163821466_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\joaqu\AppData\Local\Temp\surefire18301282777770379122\surefirebooter-20260908222656791_3.jar C:\Users\joaqu\AppData\Local\Temp\surefire18301282777770379122 2026-09-08T22-26-56_610-jvmRun1 surefire-20260908222656791_1tmp surefire_0-20260908222656791_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\joaqu\OneDrive\Desktop\Algoritmos\Proyecto1\Algoritmos-y-E.D\proyecto-base-ut01 (2)\target\test-classes;C:\Users\joaqu\OneDrive\Desktop\Algoritmos\Proyecto1\Algoritmos-y-E.D\proyecto-base-ut01 (2)\target\classes;C:\Users\joaqu\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\joaqu\AppData\Local\Temp\surefire8746834424962850718\surefirebooter-20260908163821466_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\joaqu\AppData\Local\Temp\surefire18301282777770379122\surefirebooter-20260908222656791_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="26.0.2+10-55"/>
@@ -59,15 +59,15 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="70.0"/>
   </properties>
-  <testcase name="testEsVacioAlCrear" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
-  <testcase name="testPoneYQuitaUnElemento" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
-  <testcase name="testTamaño" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
-  <testcase name="testOrdenFIFO" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
-  <testcase name="testContiene" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
   <testcase name="testVaciar" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
+  <testcase name="testQuitaDeColaVaciaLanzaExcepcion" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
   <testcase name="testEncolarDesencolarIntercalados" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
   <testcase name="testFrenteEnColaVaciaLanzaExcepcion" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
-  <testcase name="testFrenteNoRemoveElElemento" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
   <testcase name="testFrenteEsSiempreElPrimeroEnEntrar" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
-  <testcase name="testQuitaDeColaVaciaLanzaExcepcion" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
+  <testcase name="testFrenteNoRemoveElElemento" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
+  <testcase name="testOrdenFIFO" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
+  <testcase name="testEsVacioAlCrear" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
+  <testcase name="testTamaño" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
+  <testcase name="testContiene" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
+  <testcase name="testPoneYQuitaUnElemento" classname="ucu.edu.aed.impl.ColaTest" time="0.0"/>
 </testsuite>

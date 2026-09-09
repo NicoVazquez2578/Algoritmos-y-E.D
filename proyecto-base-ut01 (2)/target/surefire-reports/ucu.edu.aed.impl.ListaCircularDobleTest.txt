@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: ucu.edu.aed.impl.ListaCircularDobleTest
 -------------------------------------------------------------------------------
-Tests run: 30, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in ucu.edu.aed.impl.ListaCircularDobleTest
+Tests run: 30, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s -- in ucu.edu.aed.impl.ListaCircularDobleTest
