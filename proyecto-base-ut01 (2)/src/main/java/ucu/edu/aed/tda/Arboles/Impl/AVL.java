@@ -44,37 +44,45 @@ public class AVL <T extends Comparable<T>> extends ArbolBinarioBusqueda<T>{
         }
     }
 
+    @Override
+        public boolean eliminar(Comparable<T> criterioBusqueda) {
+            if (raiz == null || criterioBusqueda == null || buscar(criterioBusqueda) == null) {
+        return false;
+        }
+        raiz = eliminarAVL(raiz, criterioBusqueda);
+        return true;
+    }
+
     public TDAElemento<T> eliminarAVL(TDAElemento<T> nodo, Comparable<T> criterio){
-        if(nodo == null){
+        if (nodo == null) {
             return null;
         }
-        else {
-            TDAElemento<T> tmp = nodo;
-            if (criterio.compareTo(nodo.getDato()) < 0){
-                nodo.setHijoIzquierdo(eliminarAVL(nodo.getHijoIzquierdo(), criterio));
-            }
-            if (criterio.compareTo(nodo.getDato()) > 0) {
-                nodo.setHijoDerecho(eliminarAVL(nodo.getHijoDerecho(), criterio));
-            }
-            else {
-                tmp = nodo.eliminar(criterio);
-            }
-
-            int balance = calcularBalance(tmp);
-            if (balance > 1 && calcularBalance(tmp.getHijoIzquierdo()) >= 0){
-                return rotacionLL(tmp);
-            }
-            if (balance > 1 && calcularBalance(tmp.getHijoIzquierdo()) < 0) {
-                return rotacionLR(tmp);
-            }
-            if (balance < -1 && calcularBalance(tmp.getHijoDerecho()) <= 0) {
-                return rotacionRR(tmp);
-            }
-            if (balance < -1 && calcularBalance(tmp.getHijoDerecho()) > 0) {
-                return rotacionRL(tmp);
-            }
-            return tmp;
+        TDAElemento<T> tmp;
+        if (criterio.compareTo(nodo.getDato()) < 0) {
+            nodo.setHijoIzquierdo(eliminarAVL(nodo.getHijoIzquierdo(), criterio));
+            tmp = nodo;
+        } else if (criterio.compareTo(nodo.getDato()) > 0) {
+            nodo.setHijoDerecho(eliminarAVL(nodo.getHijoDerecho(), criterio));
+            tmp = nodo;
+        } else {
+            tmp = nodo.eliminar(criterio);
         }
+    
+
+        int balance = calcularBalance(tmp);
+        if (balance > 1 && calcularBalance(tmp.getHijoIzquierdo()) >= 0) {
+            return rotacionLL(tmp);
+        }
+        if (balance > 1 && calcularBalance(tmp.getHijoIzquierdo()) < 0) {
+            return rotacionLR(tmp);
+        }
+        if (balance < -1 && calcularBalance(tmp.getHijoDerecho()) <= 0) {
+            return rotacionRR(tmp);
+        }
+        if (balance < -1 && calcularBalance(tmp.getHijoDerecho()) > 0) {
+            return rotacionRL(tmp);
+        }
+        return tmp;
     }
 
     public int calcularBalance(TDAElemento<T> nodo){

@@ -8,7 +8,7 @@ import ucu.edu.aed.tda.Arboles.TDAElemento;
 import ucu.edu.aed.tda.TDACola;
 
 public class ArbolBinarioBusqueda <T extends Comparable<T>> implements TDAArbolBinario<T> {
-    protected TDAElemento<T> raiz;
+    public TDAElemento<T> raiz;
 
     @Override
     public T buscar(Comparable<T> criterioBusqueda) {
