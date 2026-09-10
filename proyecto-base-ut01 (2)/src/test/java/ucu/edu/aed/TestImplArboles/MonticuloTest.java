@@ -1,10 +1,9 @@
-package ucu.edu.aed.TestImplArbol;
-
-package ucu.edu.aed.Arboles.Impl.Monticulo;
-
-import junit.framework.TestCase;
+package ucu.edu.aed.TestImplArboles;
 
 import java.util.NoSuchElementException;
+
+import junit.framework.TestCase;
+import ucu.edu.aed.tda.Arboles.Impl.Monticulo;
 
 public class MonticuloTest extends TestCase {
 
