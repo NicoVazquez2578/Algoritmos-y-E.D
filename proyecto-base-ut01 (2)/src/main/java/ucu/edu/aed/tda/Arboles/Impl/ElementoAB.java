@@ -116,7 +116,7 @@ public class ElementoAB <T extends Comparable <T>> implements TDAElemento<T> {
                 this.hijoDerecho = new ElementoAB<>((T) nuevoDato);
             }
             else{
-                this.hijoDerecho.insertar(nuevoDato);
+                return this.hijoDerecho.insertar(nuevoDato);
             }
         }
         else if (nuevoDato.compareTo(this.dato) < 0){
@@ -124,10 +124,10 @@ public class ElementoAB <T extends Comparable <T>> implements TDAElemento<T> {
                 this.hijoIzquierdo = new ElementoAB<>((T) nuevoDato);
             }
             else{
-                this.hijoIzquierdo.insertar(nuevoDato);
+                return this.hijoIzquierdo.insertar(nuevoDato);
             }
-            //si es igual, no hace nada asi no hay elementos duplicados en el arbol
         }
+        // dato igual al nodo actual: duplicado, se ignora sin modificar el árbol
         return true;
     }
 

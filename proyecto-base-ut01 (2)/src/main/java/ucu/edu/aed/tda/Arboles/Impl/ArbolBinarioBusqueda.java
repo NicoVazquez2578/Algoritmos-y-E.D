@@ -21,25 +21,24 @@ public class ArbolBinarioBusqueda <T extends Comparable<T>> implements TDAArbolB
 
     @Override
     public boolean eliminar(Comparable<T> criterioBusqueda) {
-        if (raiz != null) {
-            raiz = raiz.eliminar(criterioBusqueda);
-            return true;
+        if (raiz == null || raiz.buscar(criterioBusqueda) == null) {
+            return false;
         }
-        return false;
+        raiz = raiz.eliminar(criterioBusqueda);
+        return true;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean insertar(Comparable<T> dato) {
+        if (dato == null) return false;
         if (esVacio()) {
-            if (dato != null) {
-                raiz = new ElementoAB<>((T) dato);
-                return true;
-            }
-            return false;
-        } else {
-            return raiz.insertar(dato);
+            raiz = new ElementoAB<>((T) dato);
+            return true;
         }
+        if (raiz.buscar(dato) != null) return false; // duplicado
+        raiz.insertar(dato);
+        return true;
     }
 
     @Override
