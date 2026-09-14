@@ -1,11 +1,11 @@
 package ucu.edu.aed.TestImplArboles;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 import ucu.edu.aed.tda.Arboles.Impl.AVL;
 import ucu.edu.aed.tda.Arboles.TDAElemento;
-import java.util.ArrayList;
-import java.util.List;
-import ucu.edu.aed.tda.Arboles.Impl.ArbolBinarioBusqueda;
 
 public class AVLTest extends TestCase {
 
