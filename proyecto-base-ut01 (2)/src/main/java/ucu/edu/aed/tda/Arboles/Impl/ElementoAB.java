@@ -3,6 +3,7 @@ package ucu.edu.aed.tda.Arboles.Impl;
 import java.util.function.Consumer;
 
 import ucu.edu.aed.tda.Arboles.TDAElemento;
+import ucu.edu.aed.tda.TDALista;
 
 public class ElementoAB <T extends Comparable <T>> implements TDAElemento<T> {
 
@@ -234,5 +235,35 @@ public class ElementoAB <T extends Comparable <T>> implements TDAElemento<T> {
             }
         }
         return -1;
+    }
+
+    @Override
+    public void completos(TDALista<TDAElemento<T>> resultado) {
+        if (hijoIzquierdo != null && hijoDerecho != null) {
+            resultado.agregar(this);
+        }
+        if (hijoIzquierdo != null) {
+            hijoIzquierdo.completos(resultado);
+        }
+        if (hijoDerecho != null) {
+            hijoDerecho.completos(resultado);
+        }
+    }
+
+    @Override
+    public void enNivel(int nivel, TDALista<TDAElemento<T>> resultado) {
+        if (nivel < 0) {
+            return;
+        }   
+        if (nivel == 0) {
+            resultado.agregar(this);
+            return;
+        }
+        if (hijoIzquierdo != null) {
+            hijoIzquierdo.enNivel(nivel - 1, resultado);
+        }
+        if (hijoDerecho != null) {
+            hijoDerecho.enNivel(nivel - 1, resultado);
+        }
     }
 }

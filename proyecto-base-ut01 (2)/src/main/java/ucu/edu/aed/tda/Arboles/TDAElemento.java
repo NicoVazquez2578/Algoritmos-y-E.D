@@ -2,6 +2,8 @@ package ucu.edu.aed.tda.Arboles;
 
 import java.util.function.Consumer;
 
+import ucu.edu.aed.tda.TDALista;
+
 /**
  * Modela un nodo del árbol binario.
  * La implementación de esta estructura debe ser recursiva.
@@ -119,4 +121,12 @@ public interface TDAElemento <T>{
      * si no se encuentra, retorna -1
      */
     int obtenerNivel(Comparable<T> criterioBusqueda);
+
+
+    //Ejercicio 6 problem set2
+    /** Agrega a 'resultado' los nodos completos (ambos hijos no nulos) del subárbol. */
+    void completos(TDALista<TDAElemento<T>> resultado);
+
+    /** Agrega a 'resultado' los nodos que están 'nivel' niveles debajo de este nodo (0 = este nodo). */
+    void enNivel(int nivel, TDALista<TDAElemento<T>> resultado);
 }

@@ -2,6 +2,8 @@ package ucu.edu.aed.tda.Arboles;
 
 import java.util.function.Consumer;
 
+import ucu.edu.aed.tda.TDALista;
+
 /**
  * Define un Tipo de Dato Abstracto (TDA) Árbol Binario genérico.
  *
@@ -115,4 +117,11 @@ public interface TDAArbolBinario<T> {
     * Hito 1.
     */
     void recorridoPorNiveles(Consumer<T> consumidor);
+
+    //Ejercicio 6 problem set2
+    int altura();
+    
+    TDALista<TDAElemento<T>> completos();
+    
+    TDALista<TDAElemento<T>> enNivel(int nivel);
 }
