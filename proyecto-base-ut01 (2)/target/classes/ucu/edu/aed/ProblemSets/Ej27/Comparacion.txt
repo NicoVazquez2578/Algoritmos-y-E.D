@@ -1,0 +1,8 @@
+- Costo de Memoria: La Cola Enlazada usa memoria de forma dinámica O(N) pero 
+requiere punteros extra por nodo. La Cola Circular asigna un vector fijo O(CAPACIDAD)
+optimizado para memoria.
+
+- Tiempo de Ejecución: Ambas logran O(1) en insertar y remover.
+
+- Escenario Ideal: Para buffers con velocidades distintas conviene la Cola Circular porque
+limita el uso máximo de memoria y evita desbordes cuando la velocidad de llegada supera la de procesamiento.

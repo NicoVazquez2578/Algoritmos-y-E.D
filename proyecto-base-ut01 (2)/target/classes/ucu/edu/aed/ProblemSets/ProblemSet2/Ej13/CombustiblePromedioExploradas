@@ -1,0 +1,65 @@
+LENGUAJE NATURAL:
+   Se recorre el AVL una sola vez acumulando, para las naves de clase
+   "Explorador", la suma de su combustible y la cantidad de naves.
+   El promedio es suma / cantidad (división real, no entera).
+
+ PRECONDICIONES:
+   - Ninguna. Si no hay exploradoras se devuelve 0 (evita dividir
+     por cero).
+
+ POSTCONDICIONES:
+   - Devuelve el promedio real del combustible de las naves de clase
+     "Explorador", o 0 si no hay ninguna.
+   - El árbol no se modifica.
+
+ ORDEN DEL TIEMPO DE EJECUCIÓN: O(n)
+   - Un solo recorrido O(n) más una división final O(1).
+   - Es mejor que buscar cada exploradora por su código en el AVL,
+     que costaría O(k·log n) más el recorrido previo para obtener los
+     códigos.
+   - Espacio extra: O(log n) de recursión + O(1) del acumulador.
+
+función promedioCombustibleExploradoras() : real
+    acum ← nuevo Acumulador(suma ← 0, cantidad ← 0)
+    si this.raiz ≠ null entonces
+        this.raiz.acumularExploradoras(acum)
+    fin si
+    si acum.cantidad = 0 entonces
+        devolver 0
+    fin si
+    devolver acum.suma / acum.cantidad          // división real
+fin función
+
+
+ LENGUAJE NATURAL:
+   Recorre el subárbol en inorden. Si la nave del nodo actual es de
+   clase "Explorador", suma su combustible a acum.suma y suma 1 a
+   acum.cantidad.
+
+ PRECONDICIONES:
+   - acum ≠ null, se recibe por referencia (puede traer valores
+     acumulados de otros subárboles).
+
+ POSTCONDICIONES:
+   - acum.suma aumenta en el combustible de cada exploradora del
+     subárbol y acum.cantidad aumenta en la cantidad de exploradoras
+     del subárbol.
+   - El subárbol no se modifica.
+
+ ORDEN DEL TIEMPO DE EJECUCIÓN: O(n), con n = nodos del subárbol
+   - Cada nodo se visita una vez, con una comparación y a lo sumo dos
+     sumas (trabajo constante).
+   - Recurrencia: T(n) = T(k) + T(n-k-1) + c  ->  T(n) = c·n.
+
+procedimiento acumularExploradoras(acum : Acumulador)
+    si this.hijoIzq ≠ null entonces
+        this.hijoIzq.acumularExploradoras(acum)
+    fin si
+    si this.dato.clase = "Explorador" entonces
+        acum.suma ← acum.suma + this.dato.combustible
+        acum.cantidad ← acum.cantidad + 1
+    fin si
+    si this.hijoDer ≠ null entonces
+        this.hijoDer.acumularExploradoras(acum)
+    fin si
+fin procedimiento

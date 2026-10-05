@@ -1,0 +1,27 @@
+algoritmo ControlCorchetes(TDANodo<String>caracteres){
+
+    pila = new TDAPila;                     O(1)
+    if (caracteres == null){                O(1)
+        return true
+    }
+    actual = caracteres;                    O(1)
+    while(actual != null){                  O(N)
+        if(actual.dato == "{"){             O(1)
+            pila.push(actual.dato);         O(1)
+        }
+        else{
+            if (actual.dato == "}"){        O(1)
+                tope = pila.pop();          O(1)
+            
+                if (tope == null){          O(1)
+                return false                O(1)
+                }
+            }
+        }
+        actual = actual.siguiente;          O(1)
+    }
+    return pila.estaVacia();                O(1)
+}
+
+Nos quedamos con termino dominante, entonces por regla del producto y dsp por regla de la suma.,
+ControlCorchestes es de O(N).
