@@ -33,4 +33,5 @@ public interface IGestorEsperaRepuestos {
 
     // Devuelve los vehiculos que estan esperando repuesto. 
     TDALista<Vehiculo> listar();
+
 }
