@@ -14,7 +14,6 @@ public class TArbolGenealogico {
         return raiz;
     }
 
-    // Auxiliar: Busca un nodo por el nombre de la persona
     public TNodoArbolGenealogico buscarNodo(String nombre, TNodoArbolGenealogico actual) {
         if (actual == null) actual = this.raiz;
         if (actual == null) return null;
@@ -52,14 +51,14 @@ public class TArbolGenealogico {
         if (nodo == null) nodo = this.raiz;
         if (nodo == null || nodo.getHijos().isEmpty()) return 0;
 
-        int maxAlturaHijos = 0;
+        int maxAltura = 0;
         for (TNodoArbolGenealogico hijo : nodo.getHijos()) {
             int alt = calcularAltura(hijo);
-            if (alt > maxAlturaHijos) {
-                maxAlturaHijos = alt;
+            if (alt > maxAltura) {
+                maxAltura = alt;
             }
         }
-        return 1 + maxAlturaHijos;
+        return 1 + maxAltura;
     }
 
     // 3. Contar la cantidad total de personas
@@ -74,7 +73,7 @@ public class TArbolGenealogico {
         return total;
     }
 
-    // 4. Obtener todas las personas de una generación dada
+    // 4. Obtener personas por generación (Generación 0 = raíz)
     public List<Persona> obtenerPersonasPorGeneracion(int generacionObjetivo) {
         List<Persona> resultado = new ArrayList<>();
         obtenerGeneracionRec(raiz, generacionObjetivo, 0, resultado);
@@ -92,7 +91,7 @@ public class TArbolGenealogico {
         }
     }
 
-    // Auxiliar: Obtiene el camino de nodos desde la raíz hasta la persona dada
+    // Auxiliar: Busca la ruta de nodos hasta una persona
     private boolean obtenerCamino(TNodoArbolGenealogico nodo, String nombre, List<TNodoArbolGenealogico> camino) {
         if (nodo == null) return false;
 
@@ -111,7 +110,7 @@ public class TArbolGenealogico {
         return false;
     }
 
-    // 5. Encontrar el ancestro común más cercano entre dos personas
+    // 5. Ancestro común más cercano entre dos personas
     public Persona ancestroComunMasCercano(String nombre1, String nombre2) {
         List<TNodoArbolGenealogico> camino1 = new ArrayList<>();
         List<TNodoArbolGenealogico> camino2 = new ArrayList<>();

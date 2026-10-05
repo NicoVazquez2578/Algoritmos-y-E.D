@@ -2,7 +2,7 @@ package ucu.edu.aed.ProblemSets.ProblemSet3.ej16;
 
 public class MainEjercicio16 {
     public static void main(String[] args) {
-        //PARTE 1: Construcción manual
+        //Parte 1: Construcción manual
         TNodoArbolGenealogico raiz = new TNodoArbolGenealogico(new Persona("Ana", 1940));
 
         TNodoArbolGenealogico hijo1 = new TNodoArbolGenealogico(new Persona("Carlos", 1965));
@@ -30,14 +30,14 @@ public class MainEjercicio16 {
 
         TArbolGenealogico arbol = new TArbolGenealogico(raiz);
 
-        //PARTE 2: Pruebas de los Métodos
+        //Parte 2: Pruebas de los métodos+
         System.out.println("1. Descendientes de Carlos: " + arbol.listarDescendientes("Carlos"));
         System.out.println("2. Altura del árbol: " + arbol.calcularAltura(arbol.getRaiz()));
         System.out.println("3. Cantidad total de personas: " + arbol.contarPersonas(arbol.getRaiz()));
-        System.out.println("4. Personas de la Generación 2: " + arbol.obtenerPersonasPorGeneracion(2));
+        System.out.println("4. Personas en Generación 2: " + arbol.obtenerPersonasPorGeneracion(2));
         System.out.println("5. Ancestro común más cercano:");
-        System.out.println("   - Entre Elena y Fernando: " + arbol.ancestroComunMasCercano("Elena", "Fernando"));
-        System.out.println("   - Entre Elena y Hugo: " + arbol.ancestroComunMasCercano("Elena", "Hugo"));
+        System.out.println("   - Elena y Fernando: " + arbol.ancestroComunMasCercano("Elena", "Fernando"));
+        System.out.println("   - Elena y Hugo: " + arbol.ancestroComunMasCercano("Elena", "Hugo"));
         System.out.println("6. ¿Elena es descendiente de Carlos?: " + arbol.esDescendiente("Carlos", "Elena"));
         System.out.println("   ¿Hugo es descendiente de Beatriz?: " + arbol.esDescendiente("Beatriz", "Hugo"));
     }

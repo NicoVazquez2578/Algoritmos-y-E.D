@@ -1,0 +1,135 @@
+NodoTrie<T>:
+    hijos: HashMap<Caracter, NodoTrie<T>>   // letra -> siguiente nodo
+    esFinPalabra: Booleano                  // ¿acá termina una palabra?
+    dato: T                                 // dato asociado (solo si esFinPalabra)
+
+Trie<T>:
+    raiz: NodoTrie<T>                       // nodo vacío, no representa letra
+
+    
+    
+//Operaciones primitivas de nodo trie    
+
+obtenerHijo(c):
+    devolver hijos.recuperar(c)        // el hijo, o null si no existe
+
+agregarHijo(c):
+    nuevo <- nuevo NodoTrie()
+    hijos.poner(c, nuevo)
+    devolver nuevo
+
+eliminarHijo(c):
+    hijos.eliminar(c)
+
+esHoja():
+    devolver hijos.estaVacio()
+
+
+
+1- Lenguaje natural: Partimos de la raíz y, por cada letra, bajamos al hijo correspondiente.
+ Si falta un hijo, la palabra no está. Si recorremos todas las letras, la palabra está solo si el nodo final tiene esPalabra = verdadero.
+ Un camino que existe pero termina en un nodo no marcado es solo prefijo de otras palabras.
+
+Precondicion: palabra != null
+Postcondicion: devuelve el nodo de la palabra si fue insertada, o null si no.
+
+Orden:O(m)
+
+buscar(palabra):
+1    actual <- raiz
+2    Para cada caracter c de palabra
+3        actual <- actual.obtenerHijo(c)
+4        Si actual = null entonces
+5            devolver null
+6        FinSi
+7    FinPara
+8    Si actual.esPalabra entonces
+9        devolver actual
+10   FinSi
+11   devolver null
+
+
+
+2- Lenguaje natural:
+
+Primero bajamos hasta el nodo donde termina el prefijo (como en buscar). Si el camino se corta, devolvemos la lista vacía.
+ Si llegamos, recorremos todo el subárbol de ese nodo en preorden.
+ Cada vez que encontramos un nodo con esPalabra, agregamos la palabra armada hasta ahí.
+
+Precondicion: prefijo != null
+Postcondicion: devuelve todas las palabras del trie que empiezan con prefijo, incluido el propio prefijo de esa palabra.
+
+Orden: O(p+m)
+
+palabrasConPrefijo(prefijo):
+    resultado <- lista vacía
+    actual <- raiz
+    Para cada caracter c de prefijo
+        actual <- actual.obtenerHijo(c)
+        Si actual = null entonces
+            devolver resultado
+        FinSi
+    FinPara
+    recolectar(actual, prefijo, resultado)
+   devolver resultado
+
+recolectar(nodo, acumulado, resultado):
+   Si nodo.esPalabra entonces
+       resultado.agregar(acumulado)
+   FinSi
+   Para cada c en nodo.hijos.claves()
+       recolectar(nodo.obtenerHijo(c), acumulado + c, resultado)
+   FinPara
+
+
+3- Lenguaje natural: Recorremos la palabra desde la raíz. Si falta el hijo para una letra, lo creamos. Si existe, lo reutilizamos, y así se comparten los prefijos.
+ Al final marcamos el último nodo como palabra y guardamos el dato. Si la palabra ya existía, el dato se reemplaza.
+
+ Precondicion: palabra != null y de largo mayor o igual a 1
+ Postcondicion: buscar(palabra) devuelve un nodo con ese dato.
+
+Orden: O(m)
+
+insertar(palabra, dato):
+    actual <- raiz
+    Para cada caracter c de palabra
+        hijo <- actual.obtenerHijo(c)
+        Si hijo = null entonces
+            hijo <- actual.agregarHijo(c)
+        FinSi
+        actual <- hijo
+    FinPara
+    actual.esPalabra <- verdadero
+   actual.dato <- dato
+
+4- Lenguaje natural:Eliminar tiene dos partes distintas:
+
+Desmarcar el nodo final (esPalabra <- falso) y borrar su dato.
+Podar hacia arriba los nodos que quedaron inútiles, es decir los que no tienen hijos y no son fin de otra palabra.
+ Nunca se borra un nodo compartido con otra palabra. Si no se poda, quedan nodos fantasma que ocupan memoria. 
+
+Precondicion: palabra != null
+Postcondicion: devuelve verdadero si la palabra existía y falso si no. Después de eliminar, buscar(palabra) = null. 
+
+Orden: O(m)
+
+
+eliminar(palabra):
+    Si buscar(palabra) = null entonces
+        devolver falso
+    FinSi
+    eliminarRec(raiz, palabra, 0)
+    devolver verdadero
+
+eliminarRec(nodo, palabra, i):      // verdadero = "este nodo quedó inútil, el padre puede borrarlo"
+    Si i = largo(palabra) entonces
+        nodo.esPalabra <- falso
+        nodo.dato <- null
+    Sino
+       c <- palabra[i]
+       hijo <- nodo.obtenerHijo(c)
+       Si eliminarRec(hijo, palabra, i + 1) entonces
+           nodo.eliminarHijo(c)
+       FinSi
+   FinSi
+   devolver (NO nodo.esPalabra) Y nodo.esHoja()
