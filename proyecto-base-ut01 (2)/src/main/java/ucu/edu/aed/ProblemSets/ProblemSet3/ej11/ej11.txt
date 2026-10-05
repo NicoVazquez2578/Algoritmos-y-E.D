@@ -1,0 +1,22 @@
+Ejercicio 11 – Frecuencia de palabras de un libro
+
+1. Clase elegida: HashMap<String, Integer>
+Usando la Carta de Selección de Colecciones de la unidad:
+●	Pares clave/valor donde la clave es la palabra y el valor es la cantidad de veces que aparece.
+●	No importa el orden de los elementos, para contar no hace falta, solo importa al final para hacer el top 10.
+●	La clave única se determina con equals() y no con ==, dos Strings con las mismas letras son la misma palabra.
+●	Resultado de la carta: HashMap.
+Además, con HashMap buscar y actualizar el contador de una palabra es O(1) en promedio, así que contar un libro de N palabras es O(N). Un TreeMap costaría O(log n) por palabra y una lista O(n), y no hay ninguna ventaja que lo justifique. Para el top 10 se pasan las entradas a una lista y se ordenan por frecuencia (solo las palabras distintas, que son bastantes menos que las totales).
+
+2. Programa
+FrecuenciaPalabras.java. Lee el archivo línea por línea, pasa todo a minúsculas, separa por todo lo que no sea letra, cuenta con el HashMap, ordena por frecuencia e imprime las 10 más frecuentes (también las guarda en top10.csv).
+Para ejecutarlo:
+javac -encoding UTF-8 FrecuenciaPalabras.java
+java FrecuenciaPalabras libro.txt
+
+El libro.txt incluido es un texto de ejemplo; para la entrega hay que usar el libro que corresponda.
+
+3. Gráfico
+top10.png: gráfico de barras con las 10 palabras que más ocurren, hecho a partir de top10.csv (el CSV se puede abrir en Excel y graficar ahí también).
+En el libro de ejemplo, las que más ocurren son palabras como "que", "los", "el", "y", "la": en cualquier texto en español ganan las palabras muy comunes (artículos, preposiciones), no las que tienen significado propio.
+
