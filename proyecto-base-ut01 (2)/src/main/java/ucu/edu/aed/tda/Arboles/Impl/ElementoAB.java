@@ -3,6 +3,7 @@ package ucu.edu.aed.tda.Arboles.Impl;
 import java.util.function.Consumer;
 
 import ucu.edu.aed.tda.Arboles.TDAElemento;
+import ucu.edu.aed.tda.TDALista;
 
 public class ElementoAB <T extends Comparable <T>> implements TDAElemento<T> {
 
@@ -116,7 +117,7 @@ public class ElementoAB <T extends Comparable <T>> implements TDAElemento<T> {
                 this.hijoDerecho = new ElementoAB<>((T) nuevoDato);
             }
             else{
-                this.hijoDerecho.insertar(nuevoDato);
+                return this.hijoDerecho.insertar(nuevoDato);
             }
         }
         else if (nuevoDato.compareTo(this.dato) < 0){
@@ -124,10 +125,10 @@ public class ElementoAB <T extends Comparable <T>> implements TDAElemento<T> {
                 this.hijoIzquierdo = new ElementoAB<>((T) nuevoDato);
             }
             else{
-                this.hijoIzquierdo.insertar(nuevoDato);
+                return this.hijoIzquierdo.insertar(nuevoDato);
             }
-            //si es igual, no hace nada asi no hay elementos duplicados en el arbol
         }
+        // dato igual al nodo actual: duplicado, se ignora sin modificar el árbol
         return true;
     }
 
@@ -234,5 +235,35 @@ public class ElementoAB <T extends Comparable <T>> implements TDAElemento<T> {
             }
         }
         return -1;
+    }
+
+    @Override
+    public void completos(TDALista<TDAElemento<T>> resultado) {
+        if (hijoIzquierdo != null && hijoDerecho != null) {
+            resultado.agregar(this);
+        }
+        if (hijoIzquierdo != null) {
+            hijoIzquierdo.completos(resultado);
+        }
+        if (hijoDerecho != null) {
+            hijoDerecho.completos(resultado);
+        }
+    }
+
+    @Override
+    public void enNivel(int nivel, TDALista<TDAElemento<T>> resultado) {
+        if (nivel < 0) {
+            return;
+        }   
+        if (nivel == 0) {
+            resultado.agregar(this);
+            return;
+        }
+        if (hijoIzquierdo != null) {
+            hijoIzquierdo.enNivel(nivel - 1, resultado);
+        }
+        if (hijoDerecho != null) {
+            hijoDerecho.enNivel(nivel - 1, resultado);
+        }
     }
 }

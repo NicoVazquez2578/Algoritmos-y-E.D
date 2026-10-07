@@ -1,15 +1,15 @@
 package ucu.edu.aed.ProyectoPrimerHito;
 
-import java.time.LocalDate;
-import java.util.Objects;
-
 import ucu.edu.aed.tda.TDALista;
 import ucu.edu.aed.tda.TDAPila;
+
+import java.time.LocalDate;
+import java.util.Objects;
 
 /*
  Representa un vehiculo registrado en el taller mecanico.
  */
-public class Vehiculo implements Comparable<Vehiculo> {
+public class Vehiculo {
 
     private final String patente;
     private String marca;
@@ -27,7 +27,7 @@ public class Vehiculo implements Comparable<Vehiculo> {
     public Vehiculo(String patente, String marca, String modelo, int anio, String propietario,
                      TipoIngreso tipoIngreso, int nivelUrgencia, LocalDate fechaIngreso,
                      TDAPila<Tarea> tareasPendientes, TDALista<Tarea> historialTrabajos) {
-        if (patente == null || patente.trim().isEmpty()) {
+        if (patente == null || patente.isBlank()) {
             throw new IllegalArgumentException("La patente no puede ser nula ni vacia.");
         }
         this.patente = patente;
@@ -129,11 +129,6 @@ public class Vehiculo implements Comparable<Vehiculo> {
     }
 
     @Override
-    public int compareTo(Vehiculo otro) {
-        return this.patente.compareTo(otro.patente);
-    }
-
-    @Override
     public String toString() {
         return "Vehiculo{" +
                 "patente='" + patente + '\'' +
@@ -144,4 +139,3 @@ public class Vehiculo implements Comparable<Vehiculo> {
                 '}';
     }
 }
-

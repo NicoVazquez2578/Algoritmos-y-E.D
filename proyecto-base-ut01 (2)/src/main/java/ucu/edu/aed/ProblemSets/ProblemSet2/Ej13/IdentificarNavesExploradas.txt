@@ -1,0 +1,61 @@
+LENGUAJE NATURAL:
+   Se recorre todo el AVL en inorden. Cada nave cuya clase es
+   "Explorador" aporta su código, que se agrega al final de una lista.
+   Al terminar se devuelve la lista.
+
+ PRECONDICIONES:
+   - Ninguna (el registro puede estar vacío).
+
+ POSTCONDICIONES:
+   - Devuelve una lista con el código de cada nave de clase
+     "Explorador", ordenada de menor a mayor código (inorden de un AVL).
+   - Si no hay exploradoras, devuelve una lista vacía.
+   - El árbol no se modifica ni se desbalancea (solo se lee).
+
+ ORDEN DEL TIEMPO DE EJECUCIÓN: O(n)
+   - Llama una vez al método de nodo sobre la raíz, que visita cada
+     nodo una sola vez. El resto es trabajo constante.
+   - Espacio extra: O(log n) de recursión (la altura de un AVL es
+     O(log n)) + O(k) de la lista (k = cantidad de exploradoras).
+
+función codigosExploradoras() : Lista<entero>
+    codigos ← lista vacía
+    si this.raiz ≠ null entonces
+        this.raiz.recolectarExploradoras(codigos)
+    fin si
+    devolver codigos
+fin función
+
+
+LENGUAJE NATURAL:
+   Recorre el subárbol en inorden (izquierdo, nodo actual, derecho).
+   Si la clase de la nave del nodo actual es "Explorador", agrega su
+   código al final de la lista recibida.
+
+ PRECONDICIONES:
+   - codigos ≠ null (lista ya creada, puede tener elementos).
+
+ POSTCONDICIONES:
+   - Al final de codigos quedan agregados, en orden creciente, los
+     códigos de las naves exploradoras del subárbol. Lo que ya había
+     en la lista no cambia.
+   - El subárbol no se modifica.
+
+ ORDEN DEL TIEMPO DE EJECUCIÓN: O(n), con n = nodos del subárbol
+   - Cada nodo se visita una vez y hace trabajo constante: una
+     comparación de clase y a lo sumo un agregar al final (se asume O(1)).
+   - Recurrencia: T(n) = T(k) + T(n-k-1) + c  ->  T(n) = c·n.
+   - Mejor y peor caso son iguales, Θ(n): la clase está repartida por
+     todo el árbol y no se puede descartar ninguna rama.
+
+procedimiento recolectarExploradoras(codigos : Lista<entero>)
+    si this.hijoIzq ≠ null entonces
+        this.hijoIzq.recolectarExploradoras(codigos)
+    fin si
+    si this.dato.clase = "Explorador" entonces
+        codigos.agregar(this.dato.codigo)
+    fin si
+    si this.hijoDer ≠ null entonces
+        this.hijoDer.recolectarExploradoras(codigos)
+    fin si
+fin procedimiento

@@ -3,9 +3,11 @@ package ucu.edu.aed.tda.Arboles.Impl;
 import java.util.function.Consumer;
 
 import ucu.edu.aed.impl.Cola;
+import ucu.edu.aed.impl.Lista;
 import ucu.edu.aed.tda.Arboles.TDAArbolBinario;
 import ucu.edu.aed.tda.Arboles.TDAElemento;
 import ucu.edu.aed.tda.TDACola;
+import ucu.edu.aed.tda.TDALista;
 
 /**
  * Árbol binario genérico: no impone ningún orden entre los datos. Cada
@@ -184,5 +186,29 @@ public class ArbolBinario<T extends Comparable<T>> implements TDAArbolBinario<T>
     @Override
     public TDAElemento<T> obtenerRaiz() {
         return this.raiz;
+    }
+
+    //Ejercicio6 problem set 2
+    @Override
+    public int altura() {
+        return (raiz != null) ? raiz.altura() : 0;
+    }   
+
+    @Override   
+    public TDALista<TDAElemento<T>> completos() {
+        TDALista<TDAElemento<T>> resultado = new Lista<>();
+        if (raiz != null) {
+            raiz.completos(resultado);
+        }
+        return resultado;
+    }
+
+    @Override
+        public TDALista<TDAElemento<T>> enNivel(int nivel) {
+        TDALista<TDAElemento<T>> resultado = new Lista<>();
+        if (raiz != null) {
+            raiz.enNivel(nivel, resultado);
+        }
+        return resultado;
     }
 }

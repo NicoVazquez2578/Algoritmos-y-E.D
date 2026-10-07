@@ -1,0 +1,65 @@
+ LENGUAJE NATURAL:
+   Se recorre el árbol en inorden y se arma un texto con los nombres
+   de los hechizos prohibidos (ID impar), separados por " - ".
+
+ PRECONDICIONES:
+   - Ninguna (el árbol puede ser vacío).
+
+ POSTCONDICIONES:
+   - Devuelve un texto con los nombres de todos los hechizos
+     prohibidos, ordenados por ID y separados por " - ", sin
+     separador al principio ni al final.
+   - Si no hay hechizos prohibidos, devuelve "".
+   - El árbol no se modifica.
+
+ ORDEN DEL TIEMPO DE EJECUCIÓN: O(n)
+   - Llama una vez al método de nodo sobre la raíz (un solo recorrido).
+   - Espacio extra: O(h) de recursión + O(L) del texto resultado
+     (L = cantidad total de letras de los nombres prohibidos).
+
+
+función generarCantico() : String
+    cantico ← ""
+    si this.raiz ≠ null entonces
+        this.raiz.armarCantico(cantico)
+    fin si
+    devolver cantico
+fin función
+
+
+ LENGUAJE NATURAL:
+   Recorre el subárbol en inorden. Si el ID del nodo actual es impar,
+   agrega su nombre al final del texto. Si el texto ya tenía algo,
+   antes agrega el separador " - ".
+
+ PRECONDICIONES:
+   - cantico se recibe por referencia (puede estar vacío o ya tener
+     nombres cargados).
+
+ POSTCONDICIONES:
+   - Al final de cantico quedan agregados, en orden de ID y separados
+     por " - ", los nombres de los hechizos de ID impar del subárbol.
+   - El subárbol no se modifica.
+
+ ORDEN DEL TIEMPO DE EJECUCIÓN: O(n) el recorrido, con n = nodos del subárbol
+   - Cada nodo se visita una vez, con comparaciones y a lo sumo dos
+     concatenaciones (trabajo constante).
+   - Recurrencia: T(n) = T(k) + T(n-k-1) + c  ->  T(n) = c·n.
+   - Si agregar al final del texto es O(1) amortizado (buffer que crece),
+     el total es O(n + L). Si el texto se recopia entero en cada "+",
+     cada concatenación cuesta O(largo actual) y el total sube a O(k·L).
+
+procedimiento armarCantico(cantico : String)
+    si this.hijoIzq ≠ null entonces
+        this.hijoIzq.armarCantico(cantico)
+    fin si
+    si this.dato.id mod 2 ≠ 0 entonces
+        si cantico ≠ "" entonces
+            cantico ← cantico + " - "
+        fin si
+        cantico ← cantico + this.dato.nombre
+    fin si
+    si this.hijoDer ≠ null entonces
+        this.hijoDer.armarCantico(cantico)
+    fin si
+fin procedimiento

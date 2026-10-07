@@ -14,7 +14,8 @@ public class TalleristaTest extends TestCase {
     private Vehiculo vehiculo;
 
     @Override
-    protected void setUp() {
+    protected void setUp() throws Exception {
+        super.setUp();
         tallerista = new Tallerista("T01", "Ana Pérez", "Motor");
         vehiculo = crearVehiculo("AAA1234", 3);
     }
@@ -25,6 +26,21 @@ public class TalleristaTest extends TestCase {
         return new Vehiculo(patente, "Chevrolet", "Onix", 2020, "Juan Dueño",
                 TipoIngreso.FALLA_INFORMADA, nivelUrgencia, LocalDate.now(),
                 tareasPendientes, historial);
+    }
+
+    /**
+     * JUnit 3 no trae assertThrows (es de JUnit 4.13+/5). Este helper hace
+     * lo mismo a mano: ejecuta la acción y falla si no lanza el tipo esperado.
+     */
+    private void assertThrows(Class<? extends Throwable> tipoEsperado, Runnable accion) {
+        try {
+            accion.run();
+            fail("Se esperaba que se lanzara " + tipoEsperado.getSimpleName());
+        } catch (Throwable t) {
+            if (!tipoEsperado.isInstance(t)) {
+                fail("Se esperaba " + tipoEsperado.getSimpleName() + " pero se lanzó " + t.getClass().getSimpleName());
+            }
+        }
     }
 
     // --- estaDisponible / getVehiculoActual ---
@@ -45,7 +61,7 @@ public class TalleristaTest extends TestCase {
 
     public void testAsignar_siYaEstaOcupado_lanzaExcepcion() {
         tallerista.asignar(vehiculo);
-        Vehiculo otroVehiculo = crearVehiculo("BBB5678", 1);
+        final Vehiculo otroVehiculo = crearVehiculo("BBB5678", 1);
 
         try {
             tallerista.asignar(otroVehiculo);
@@ -69,7 +85,7 @@ public class TalleristaTest extends TestCase {
     }
 
     public void testLiberar_sinTenerVehiculoAsignado_noRompeNada() {
-        tallerista.liberar();
+        tallerista.liberar(); // si esto tira una excepción, JUnit marca el test como error
         assertTrue(tallerista.estaDisponible());
     }
 

@@ -1,0 +1,63 @@
+LENGUAJE NATURAL:
+   Un hechizo está prohibido si su ID es impar. Se recorre todo el
+   árbol en inorden y cada hechizo con ID impar se agrega al final
+   de una lista. Al terminar se devuelve la lista.
+
+ PRECONDICIONES:
+   - Ninguna (el árbol puede ser vacío).
+
+ POSTCONDICIONES:
+   - Devuelve una lista con todos los hechizos de ID impar,
+     ordenados por ID de menor a mayor (por ser inorden de un ABB).
+   - Si no hay hechizos prohibidos, devuelve una lista vacía.
+   - El árbol no se modifica.
+
+ ORDEN DEL TIEMPO DE EJECUCIÓN: O(n)
+   - Llama una vez al método de nodo sobre la raíz, que visita cada
+     nodo una sola vez. El resto es trabajo constante.
+   - Espacio extra: O(h) de recursión + O(k) de la lista (k = prohibidos).
+
+
+función hechizosProhibidos() : Lista<Hechizo>
+    prohibidos ← lista vacía
+    si this.raiz ≠ null entonces
+        this.raiz.recolectarProhibidos(prohibidos)
+    fin si
+    devolver prohibidos
+fin función
+
+
+ LENGUAJE NATURAL:
+   Recorre el subárbol en inorden (izquierdo, nodo actual, derecho).
+   Si el ID del nodo actual es impar, agrega su hechizo al final de
+   la lista recibida.
+
+ PRECONDICIONES:
+   - prohibidos ≠ null (lista ya creada, puede tener elementos).
+
+ POSTCONDICIONES:
+   - Al final de prohibidos quedan agregados, en orden de ID, todos los
+     hechizos de ID impar del subárbol. Lo que ya había en la lista
+     no cambia.
+   - El subárbol no se modifica.
+
+ ORDEN DEL TIEMPO DE EJECUCIÓN: O(n), con n = nodos del subárbol
+   - Cada nodo se visita una vez y hace trabajo constante: un mod, una
+     comparación y a lo sumo un agregar al final (se asume O(1)).
+   - Recurrencia: T(n) = T(k) + T(n-k-1) + c  ->  T(n) = c·n.
+   - Mejor y peor caso son iguales, Θ(n): los IDs impares están
+     repartidos por todo el árbol y el orden del ABB no permite
+     descartar ramas por paridad.
+
+
+procedimiento recolectarProhibidos(prohibidos : Lista<Hechizo>)
+    si this.hijoIzq ≠ null entonces
+        this.hijoIzq.recolectarProhibidos(prohibidos)
+    fin si
+    si this.dato.id mod 2 ≠ 0 entonces
+        prohibidos.agregar(this.dato)
+    fin si
+    si this.hijoDer ≠ null entonces
+        this.hijoDer.recolectarProhibidos(prohibidos)
+    fin si
+fin procedimiento
