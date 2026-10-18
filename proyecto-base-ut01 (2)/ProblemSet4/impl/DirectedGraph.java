@@ -1,4 +1,4 @@
-package ucu.edu.aed.ProblemSets.ProblemSet4.impl;
+package ProblemSet4.impl;
 
 import ucu.edu.aed.tda.grafo.IDirectedIGraph;
 import ucu.edu.aed.tda.grafo.model.edge.DirectedEdge;

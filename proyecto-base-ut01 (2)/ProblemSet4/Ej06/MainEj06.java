@@ -1,7 +1,7 @@
-package ucu.edu.aed.ProblemSets.ProblemSet4.Ej06;
+package ProblemSet4.Ej06;
 
-import ucu.edu.aed.ProblemSets.ProblemSet4.impl.DirectedGraph;
-import ucu.edu.aed.ProblemSets.ProblemSet4.impl.DirectedGraphAlgorithms;
+import ProblemSet4.impl.DirectedGraph;
+import ProblemSet4.impl.DirectedGraphAlgorithms;
 import ucu.edu.aed.tda.grafo.model.result.IDijkstraResult;
 import ucu.edu.aed.tda.grafo.model.result.IFloydWarshallResult;
 
