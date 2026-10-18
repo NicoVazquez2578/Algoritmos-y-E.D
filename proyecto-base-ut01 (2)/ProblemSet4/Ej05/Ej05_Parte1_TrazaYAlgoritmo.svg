@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" width="1200" height="820">
+  <defs>
+    <style>
+      .title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #1e293b; }
+      .subtitle { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; fill: #64748b; }
+      .header-box { font-family: 'Segoe UI', Arial, sans-serif; font-size: 15px; font-weight: bold; }
+      .text-code { font-family: 'Consolas', 'Courier New', monospace; font-size: 11.5px; fill: #334155; }
+      .bold-code { font-family: 'Consolas', 'Courier New', monospace; font-size: 11.5px; font-weight: bold; fill: #0f172a; }
+      .accent-blue { fill: #0284c7; }
+      .accent-green { fill: #16a34a; }
+      .accent-red { fill: #dc2626; }
+      .accent-purple { fill: #9333ea; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="820" fill="#f8fafc"/>
+
+  <!-- Header -->
+  <text x="600" y="32" class="title" text-anchor="middle">Problem Set UT04 — Ejercicio 5: Todos los Caminos Posibles</text>
+  <text x="600" y="50" class="subtitle" text-anchor="middle">Algoritmo DFS con Backtracking y Traza Paso a Paso (Montevideo → Porto Alegre)</text>
+  <line x1="40" y1="62" x2="1160" y2="62" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Panel Izquierdo: Lenguaje Natural & Pseudocódigo -->
+  <rect x="40" y="75" width="540" height="725" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="40" y="75" width="540" height="36" rx="8" fill="#e0f2fe"/>
+  <text x="310" y="99" class="header-box" text-anchor="middle" fill="#0369a1">Parte 1: Algoritmo en Lenguaje Natural</text>
+
+  <g transform="translate(56, 128)">
+    <text y="0" class="bold-code accent-blue">1. IDEA CENTRAL DEL ALGORITMO:</text>
+    <text y="18" class="text-code">Para hallar todos los itinerarios posibles sin ciclos</text>
+    <text y="34" class="text-code">entre un origen S y un destino T, se utiliza una</text>
+    <text y="50" class="text-code">Búsqueda en Profundidad con Vuelta Atrás</text>
+    <text y="66" class="bold-code">(DFS con Backtracking).</text>
+
+    <text y="92" class="bold-code accent-blue">2. ESTRUCTURAS AUXILIARES:</text>
+    <text y="110" class="text-code">• caminoActual: lista con los vértices de la ruta en curso.</text>
+    <text y="126" class="text-code">• visitadosEnRama: conjunto para verificar en O(1) si un</text>
+    <text y="142" class="text-code">  vértice ya integra el camino actual (evita bucles infinitos).</text>
+    <text y="158" class="text-code">• costoAcumulado: suma de los pesos de las aristas tomadas.</text>
+    <text y="174" class="text-code">• caminosEncontrados: colección final de objetos Path(ruta, costo).</text>
+
+    <text y="202" class="bold-code accent-blue">3. PROCEDIMIENTO PASO A PASO:</text>
+    <text y="220" class="text-code">a) Agregar el nodo actual al camino y al conjunto de visitados.</text>
+    <text y="238" class="text-code">b) CASO BASE (Llegada al destino):</text>
+    <text y="254" class="text-code">   Si actual == destino:</text>
+    <text y="270" class="text-code">     - Guardar una copia inmutable de caminoActual y costo.</text>
+    <text y="286" class="text-code">     - NO seguir expandiendo desde este nodo (camino simple).</text>
+    <text y="304" class="text-code">c) CASO RECURSIVO (Exploración de adyacencias):</text>
+    <text y="320" class="text-code">   Si actual != destino:</text>
+    <text y="336" class="text-code">     - Para cada arista saliente (actual → vecino, peso w):</text>
+    <text y="352" class="text-code">       * Si vecino NO está en visitadosEnRama:</text>
+    <text y="368" class="text-code">           Llamar recursivamente con (vecino, costo + w).</text>
+    <text y="384" class="text-code">       * Si ya está visitado: podar la rama (ciclo detectado).</text>
+    <text y="402" class="text-code">d) VUELTA ATRÁS (BACKTRACKING):</text>
+    <text y="418" class="text-code">   - Remover 'actual' del final de caminoActual.</text>
+    <text y="434" class="text-code">   - Remover 'actual' de visitadosEnRama.</text>
+    <text y="450" class="text-code">   (Permite que 'actual' participe en otros itinerarios alternativos).</text>
+
+    <text y="480" class="bold-code accent-blue">4. COMPLEJIDAD:</text>
+    <text y="498" class="text-code">• Espacial: O(V) por la pila de recursión y conjunto auxiliar.</text>
+    <text y="514" class="text-code">• Temporal: O(V!) en el peor caso de grafo completo, pues</text>
+    <text y="530" class="text-code">  enumera todos los caminos simples posibles.</text>
+  </g>
+
+  <!-- Panel Derecho: Traza Paso a Paso en Papel -->
+  <rect x="620" y="75" width="540" height="725" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="620" y="75" width="540" height="36" rx="8" fill="#dcfce7"/>
+  <text x="890" y="99" class="header-box" text-anchor="middle" fill="#15803d">Traza Paso a Paso en Papel (MVD → POA)</text>
+
+  <g transform="translate(636, 128)">
+    <text y="0" class="bold-code accent-green">GRAFO TA4 (Cuadro 3 - 6 Ciudades):</text>
+    <text y="16" class="text-code">MVD → {BA: 200, POA: 1000} | BA → {ASU: 1600, MVD: 200, POA: 1250}</text>
+    <text y="32" class="text-code">ASU → {BA: 1600, CUR: 800, POA: 700} | CUR → {RIO: 1500} | RIO → {CUR: 1500}</text>
+
+    <line x1="0" y1="44" x2="505" y2="44" stroke="#e2e8f0" stroke-width="1"/>
+
+    <text y="62" class="bold-code">ÁRBOL DE EXPLORACIÓN / BACKTRACKING:</text>
+
+    <text y="82" class="bold-code">[1] dfs(Montevideo, costo=0)</text>
+    <text y="98" class="text-code">    Camino: [MVD]</text>
+    <text y="114" class="text-code">    Adyacencias de MVD: BA (200), POA (1000)</text>
+
+    <text y="136" class="text-code">    ├─ Adyacente 1: <tspan class="bold-code">Buenos Aires</tspan> (costo acum = 200)</text>
+    <text y="152" class="text-code">    │  [2] dfs(Buenos Aires, costo=200)</text>
+    <text y="168" class="text-code">    │      Camino: [MVD, BA]</text>
+    <text y="184" class="text-code">    │      Adyacencias: ASU (1600), MVD (200), POA (1250)</text>
+
+    <text y="204" class="text-code">    │      ├─ 1.1: <tspan class="bold-code">Asunción</tspan> (costo acum = 200 + 1600 = 1800)</text>
+    <text y="220" class="text-code">    │      │  [3] dfs(Asunción, costo=1800)</text>
+    <text y="236" class="text-code">    │      │      Camino: [MVD, BA, ASU]</text>
+    <text y="252" class="text-code">    │      │      Adyacencias: BA, CUR, POA</text>
+    <text y="268" class="text-code">    │      │      - BA: <tspan class="accent-red bold-code">DESCARTADO</tspan> (ya visitado en el camino)</text>
+    <text y="284" class="text-code">    │      │      - CUR (800): dfs(CUR, 2600) → RIO (1500)</text>
+    <text y="300" class="text-code">    │      │        → CUR <tspan class="accent-red bold-code">DESCARTADO</tspan> (ciclo) → callejón sin salida</text>
+    <text y="316" class="text-code">    │      │      - POA (700): dfs(Porto Alegre, 2500)</text>
+    <text y="332" class="bold-code accent-green">    │      │        ★ CAMINO 1: [MVD, BA, ASU, POA] | Costo: 2500</text>
+    <text y="348" class="text-code">    │      │  Backtrack: desmarcar Asunción</text>
+
+    <text y="370" class="text-code">    │      ├─ 1.2: MVD (200): <tspan class="accent-red bold-code">DESCARTADO</tspan> (ya visitado)</text>
+
+    <text y="390" class="text-code">    │      ├─ 1.3: <tspan class="bold-code">POA</tspan> (1250): dfs(Porto Alegre, 1450)</text>
+    <text y="406" class="bold-code accent-green">    │      │  ★ CAMINO 2: [MVD, BA, POA] | Costo: 1450</text>
+    <text y="422" class="text-code">    │  Backtrack: desmarcar Buenos Aires</text>
+
+    <text y="444" class="text-code">    ├─ Adyacente 2: <tspan class="bold-code">Porto Alegre</tspan> (costo acum = 1000)</text>
+    <text y="460" class="text-code">    │  [4] dfs(Porto Alegre, costo=1000)</text>
+    <text y="476" class="bold-code accent-green">    │  ★ CAMINO 3: [MVD, POA] | Costo: 1000</text>
+    <text y="492" class="text-code">    Backtrack: desmarcar Montevideo</text>
+
+    <line x1="0" y1="510" x2="505" y2="510" stroke="#e2e8f0" stroke-width="1"/>
+
+    <text y="530" class="bold-code accent-purple">RESUMEN DE ITINERARIOS ENCONTRADOS:</text>
+    <text y="550" class="bold-code">1. Montevideo → Porto Alegre</text>
+    <text y="566" class="text-code">   Escalas: Ninguna (directo) | <tspan class="bold-code">Costo Total: 1000</tspan></text>
+    <text y="586" class="bold-code">2. Montevideo → Buenos Aires → Porto Alegre</text>
+    <text y="602" class="text-code">   Escalas: Buenos Aires (200 + 1250) | <tspan class="bold-code">Costo Total: 1450</tspan></text>
+    <text y="622" class="bold-code">3. Montevideo → Buenos Aires → Asunción → Porto Alegre</text>
+    <text y="638" class="text-code">   Escalas: Buenos Aires, Asunción (200+1600+700) | <tspan class="bold-code">Costo Total: 2500</tspan></text>
+  </g>
+</svg>
+
