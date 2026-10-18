@@ -10,31 +10,51 @@ public class DirectedGraph<V, D> implements IDirectedIGraph<V, D> {
 
     private final Map<V, Set<Edge<V, D>>> adj = new LinkedHashMap<>();
 
+    // ── IGraph ──────────────────────────────────────────────────────────────
+
     @Override
-    public void agregarVertice(V v) {
-        adj.putIfAbsent(v, new LinkedHashSet<>());
+    public boolean agregarVertice(V vertex) {
+        if (adj.containsKey(vertex)) return false;
+        adj.put(vertex, new LinkedHashSet<>());
+        return true;
     }
 
     @Override
-    public void agregarArista(V source, V target, D dato) {
+    public V buscarVertice(Comparable<V> criterio) {
+        for (V v : adj.keySet())
+            if (criterio.compareTo(v) == 0) return v;
+        return null;
+    }
+
+    @Override
+    public boolean agregarArista(V source, V target, D dato) {
         agregarVertice(source);
         agregarVertice(target);
-        adj.get(source).add(new DirectedEdge<>(source, target, dato));
+        return adj.get(source).add(new DirectedEdge<>(source, target, dato));
     }
 
     @Override
-    public boolean contieneVertice(V v) { return adj.containsKey(v); }
-
-    @Override
-    public boolean contieneArista(V source, V target) {
-        if (!adj.containsKey(source)) return false;
-        for (Edge<V, D> e : adj.get(source))
-            if (e.target().equals(target)) return true;
-        return false;
+    public boolean eliminarArista(Comparable<V> source, Comparable<V> target) {
+        V s = buscarVertice(source);
+        V t = buscarVertice(target);
+        if (s == null || t == null) return false;
+        return adj.get(s).removeIf(e -> e.target().equals(t));
     }
 
     @Override
-    public Set<V> vertices() { return Collections.unmodifiableSet(adj.keySet()); }
+    public boolean removerVertice(Comparable<V> criteria) {
+        V v = buscarVertice(criteria);
+        if (v == null) return false;
+        adj.remove(v);
+        for (Set<Edge<V, D>> edges : adj.values())
+            edges.removeIf(e -> e.target().equals(v));
+        return true;
+    }
+
+    @Override
+    public Set<V> vertices() {
+        return Collections.unmodifiableSet(adj.keySet());
+    }
 
     @Override
     public Set<Edge<V, D>> aristas() {
@@ -44,38 +64,55 @@ public class DirectedGraph<V, D> implements IDirectedIGraph<V, D> {
     }
 
     @Override
-    public Set<Edge<V, D>> aristasDesde(V v) {
-        return adj.getOrDefault(v, Collections.emptySet());
+    public boolean existeArista(Comparable<V> sourceCriteria, Comparable<V> targetCriteria) {
+        return obtenerArista(sourceCriteria, targetCriteria) != null;
     }
 
     @Override
-    public int cantidadVertices() { return adj.size(); }
-
-    @Override
-    public int cantidadAristas() {
-        int n = 0;
-        for (Set<Edge<V, D>> s : adj.values()) n += s.size();
-        return n;
+    public Edge<V, D> obtenerArista(Comparable<V> sourceCriteria, Comparable<V> targetCriteria) {
+        V s = buscarVertice(sourceCriteria);
+        if (s == null) return null;
+        for (Edge<V, D> e : adj.get(s))
+            if (targetCriteria.compareTo(e.target()) == 0) return e;
+        return null;
     }
 
     @Override
-    public Set<V> successors(V v) {
+    public List<Edge<V, D>> adyacencias(Comparable<V> verticeCriteria) {
+        V v = buscarVertice(verticeCriteria);
+        if (v == null) return Collections.emptyList();
+        return new ArrayList<>(adj.get(v));
+    }
+
+    @Override
+    public void vaciar() {
+        adj.clear();
+    }
+
+    // ── IDirectedIGraph ──────────────────────────────────────────────────────
+
+    @Override
+    public Set<V> successors(Comparable<V> criteria) {
+        V v = buscarVertice(criteria);
+        if (v == null) return Collections.emptySet();
         Set<V> succ = new LinkedHashSet<>();
-        for (Edge<V, D> e : aristasDesde(v)) succ.add(e.target());
+        for (Edge<V, D> e : adj.get(v)) succ.add(e.target());
         return succ;
     }
 
     @Override
-    public Set<V> predecessors(V v) {
+    public Set<V> predecessors(Comparable<V> criteria) {
+        V target = buscarVertice(criteria);
+        if (target == null) return Collections.emptySet();
         Set<V> pred = new LinkedHashSet<>();
         for (Map.Entry<V, Set<Edge<V, D>>> entry : adj.entrySet())
             for (Edge<V, D> e : entry.getValue())
-                if (e.target().equals(v)) pred.add(entry.getKey());
+                if (e.target().equals(target)) pred.add(entry.getKey());
         return pred;
     }
 
-    // DFS con coloreo: WHITE=0, GRAY=1, BLACK=2
-    // Un ciclo existe si encontramos un vecino GRAY (back-edge)
+    // ── IGraph: ciclos y conectividad ────────────────────────────────────────
+
     @Override
     public boolean tieneCiclos() {
         Map<V, Integer> color = new HashMap<>();
@@ -86,16 +123,15 @@ public class DirectedGraph<V, D> implements IDirectedIGraph<V, D> {
     }
 
     private boolean dfsCiclo(V v, Map<V, Integer> color) {
-        color.put(v, 1); // GRAY
-        for (V w : successors(v)) {
-            if (color.get(w) == 1) return true;    // back-edge → ciclo
+        color.put(v, 1);
+        for (V w : successors(construirComparable(v))) {
+            if (color.get(w) == 1) return true;
             if (color.get(w) == 0 && dfsCiclo(w, color)) return true;
         }
-        color.put(v, 2); // BLACK
+        color.put(v, 2);
         return false;
     }
 
-    // BFS ignorando dirección para verificar conectividad
     @Override
     public boolean esConexo() {
         if (adj.isEmpty()) return true;
@@ -106,9 +142,9 @@ public class DirectedGraph<V, D> implements IDirectedIGraph<V, D> {
         visitado.add(inicio);
         while (!queue.isEmpty()) {
             V v = queue.poll();
-            for (V w : successors(v))
+            for (V w : successors(construirComparable(v)))
                 if (visitado.add(w)) queue.add(w);
-            for (V w : predecessors(v))
+            for (V w : predecessors(construirComparable(v)))
                 if (visitado.add(w)) queue.add(w);
         }
         return visitado.size() == adj.size();

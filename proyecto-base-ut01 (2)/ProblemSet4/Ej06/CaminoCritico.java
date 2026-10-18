@@ -24,25 +24,24 @@ public class CaminoCritico {
     }
 
     public static <V, D> Resultado<V> calcular(IDirectedIGraph<V, D> g) {
-        // Orden topológico
         List<V> orden = kahnSort(g);
 
-        // Fuentes (sin predecesores) y sumideros (sin sucesores)
         V fuente = null, sumidero = null;
         for (V v : orden) {
-            if (g.predecessors(v).isEmpty()) { fuente = v; break; }
+            if (g.predecessors(g.construirComparable(v)).isEmpty()) { fuente = v; break; }
         }
         for (int i = orden.size() - 1; i >= 0; i--) {
-            if (g.successors(orden.get(i)).isEmpty()) { sumidero = orden.get(i); break; }
+            if (g.successors(g.construirComparable(orden.get(i))).isEmpty()) {
+                sumidero = orden.get(i); break;
+            }
         }
 
-        // Paso hacia adelante: distancia máxima hasta cada vértice
         Map<V, Double> dist = new LinkedHashMap<>();
         Map<V, V> predMap = new LinkedHashMap<>();
         for (V v : orden) dist.put(v, 0.0);
 
         for (V v : orden) {
-            for (Edge<V, D> e : g.aristasDesde(v)) {
+            for (Edge<V, D> e : g.adyacencias(g.construirComparable(v))) {
                 double w = peso(e);
                 double alt = dist.get(v) + w;
                 if (alt > dist.get(e.target())) {
@@ -54,7 +53,6 @@ public class CaminoCritico {
 
         double costoCritico = sumidero != null ? dist.get(sumidero) : 0;
 
-        // Reconstruir camino crítico
         List<V> cc = new LinkedList<>();
         V cur = sumidero;
         while (cur != null) {
@@ -62,14 +60,12 @@ public class CaminoCritico {
             cur = predMap.get(cur);
         }
 
-        // Enumerar todos los caminos de fuente a sumidero
         List<List<V>> todosCaminos = new ArrayList<>();
         List<Double> costosCaminos = new ArrayList<>();
         if (fuente != null && sumidero != null) {
             dfsAllPaths(fuente, sumidero, g, new ArrayList<>(), 0.0, todosCaminos, costosCaminos);
         }
 
-        // Calcular holguras
         List<Double> holguras = new ArrayList<>();
         for (double c : costosCaminos) holguras.add(costoCritico - c);
 
@@ -84,7 +80,7 @@ public class CaminoCritico {
             todos.add(new ArrayList<>(camino));
             costos.add(costo);
         } else {
-            for (Edge<V, D> e : g.aristasDesde(actual)) {
+            for (Edge<V, D> e : g.adyacencias(g.construirComparable(actual))) {
                 if (!camino.contains(e.target()))
                     dfsAllPaths(e.target(), destino, g, camino, costo + peso(e), todos, costos);
             }
@@ -95,7 +91,7 @@ public class CaminoCritico {
     private static <V, D> List<V> kahnSort(IDirectedIGraph<V, D> g) {
         Map<V, Integer> inDeg = new HashMap<>();
         for (V v : g.vertices()) inDeg.put(v, 0);
-        for (Edge<V, D> e : g.aristas()) inDeg.put(e.target(), inDeg.get(e.target()) + 1);
+        for (Edge<V, D> e : g.aristas()) inDeg.merge(e.target(), 1, Integer::sum);
         Queue<V> q = new LinkedList<>();
         for (Map.Entry<V, Integer> en : inDeg.entrySet())
             if (en.getValue() == 0) q.add(en.getKey());
@@ -103,7 +99,7 @@ public class CaminoCritico {
         while (!q.isEmpty()) {
             V v = q.poll();
             orden.add(v);
-            for (V w : g.successors(v)) {
+            for (V w : g.successors(g.construirComparable(v))) {
                 int d = inDeg.get(w) - 1;
                 inDeg.put(w, d);
                 if (d == 0) q.add(w);
@@ -114,7 +110,9 @@ public class CaminoCritico {
 
     @SuppressWarnings("unchecked")
     private static <V, D> double peso(Edge<V, D> e) {
-        if (e.dato() instanceof Number) return ((Number) e.dato()).doubleValue();
+        if (e.dato() instanceof ucu.edu.aed.tda.grafo.model.edge.WeightedEdge we)
+            return we.getWeight();
+        if (e.dato() instanceof Number n) return n.doubleValue();
         return 1.0;
     }
 }
