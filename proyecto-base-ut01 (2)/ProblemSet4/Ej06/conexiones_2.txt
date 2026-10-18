@@ -1,0 +1,8 @@
+Montevideo,BuenosAires,200
+BuenosAires,Santiago,1200
+Santiago,Lima,2500
+Lima,Bogota,1800
+Bogota,Caracas,1500
+Caracas,Montevideo,5500
+BuenosAires,Lima,3000
+Santiago,Bogota,3200

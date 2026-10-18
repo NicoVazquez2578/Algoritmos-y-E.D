@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" width="1200" height="780">
+<rect width="1200" height="780" fill="white"/>
+<text x="600" y="40" font-family="Arial" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a2e">Ejercicio 6 – Parte 1.1: tieneCiclos en Lenguaje Natural y Pseudocódigo</text>
+<line x1="40" y1="55" x2="1160" y2="55" stroke="#ccc" stroke-width="1"/>
+<rect x="40" y="65" width="540" height="700" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1.2"/>
+<text x="310" y="92" font-family="Arial" font-size="15" font-weight="bold" text-anchor="middle" fill="#1971c2">Descripción en Lenguaje Natural</text>
+<text x="56" y="115" font-family="Courier New, monospace" font-size="12" font-weight="bold" fill="#1a1a2e">Idea central:</text>
+<text x="56" y="132" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">Un grafo dirigido contiene un ciclo si y</text>
+<text x="56" y="149" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">sólo si, durante un recorrido DFS, se</text>
+<text x="56" y="166" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">encuentra un arco de retroceso (back-edge):</text>
+<text x="56" y="183" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">una arista (v→w) donde w ya está en la</text>
+<text x="56" y="200" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">pila de recursión actual (color GRIS).</text>
+<text x="56" y="225" font-family="Courier New, monospace" font-size="12" font-weight="bold" fill="#1a1a2e">Coloreado de vértices:</text>
+<text x="56" y="242" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">  BLANCO (0): No visitado todavía.</text>
+<text x="56" y="259" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">  GRIS   (1): En la pila de recursión.</text>
+<text x="56" y="276" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">  NEGRO  (2): Completamente procesado.</text>
+<text x="56" y="301" font-family="Courier New, monospace" font-size="12" font-weight="bold" fill="#1a1a2e">Algoritmo – tieneCiclos(grafo):</text>
+<text x="56" y="318" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">1. Colorear todos los vértices de BLANCO.</text>
+<text x="56" y="335" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">2. Para cada vértice v del grafo:</text>
+<text x="56" y="352" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">   Si color[v] == BLANCO (no visitado):</text>
+<text x="56" y="369" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">     Invocar dfsCiclo(v, color, grafo).</text>
+<text x="56" y="386" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">     Si dfsCiclo retorna VERDADERO:</text>
+<text x="56" y="403" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">       Retornar VERDADERO (hay ciclo).</text>
+<text x="56" y="420" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">3. Retornar FALSO (no hay ciclo).</text>
+<text x="56" y="445" font-family="Courier New, monospace" font-size="12" font-weight="bold" fill="#1a1a2e">Algoritmo – dfsCiclo(v, color, grafo):</text>
+<text x="56" y="462" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">1. Poner color[v] = GRIS (en proceso).</text>
+<text x="56" y="479" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">2. Para cada sucesor w de v:</text>
+<text x="56" y="496" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">   Si color[w] == GRIS:</text>
+<text x="56" y="513" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">     Se encontró un arco de retroceso.</text>
+<text x="56" y="530" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">     → Retornar VERDADERO (hay ciclo).</text>
+<text x="56" y="547" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">   Si color[w] == BLANCO:</text>
+<text x="56" y="564" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">     Si dfsCiclo(w, color) es VERDADERO:</text>
+<text x="56" y="581" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">       Retornar VERDADERO.</text>
+<text x="56" y="598" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">3. Poner color[v] = NEGRO (terminado).</text>
+<text x="56" y="615" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">4. Retornar FALSO.</text>
+<text x="56" y="640" font-family="Courier New, monospace" font-size="12" font-weight="bold" fill="#1a1a2e">Complejidad: O(V + E)</text>
+<text x="56" y="657" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">  V = cantidad de vértices</text>
+<text x="56" y="674" font-family="Courier New, monospace" font-size="12" font-weight="normal" fill="#495057">  E = cantidad de aristas</text>
+<rect x="620" y="65" width="540" height="700" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1.2"/>
+<text x="890" y="92" font-family="Arial" font-size="15" font-weight="bold" text-anchor="middle" fill="#1971c2">Pseudocódigo de Alto Nivel</text>
+<rect x="628" y="104" width="524" height="660" rx="4" fill="#1a1a2e"/>
+<text x="638" y="115" font-family="Courier New, monospace" font-size="12" fill="#6c757d">// Constantes de color</text>
+<text x="638" y="131" font-family="Courier New, monospace" font-size="12" fill="#333">BLANCO ← 0  // no visitado</text>
+<text x="638" y="147" font-family="Courier New, monospace" font-size="12" fill="#333">GRIS   ← 1  // en pila DFS</text>
+<text x="638" y="163" font-family="Courier New, monospace" font-size="12" fill="#333">NEGRO  ← 2  // completado</text>
+<text x="638" y="187" font-family="Courier New, monospace" font-size="12" fill="#1971c2">función tieneCiclos(grafo):</text>
+<text x="638" y="203" font-family="Courier New, monospace" font-size="12" fill="#333">  color ← mapa vacío</text>
+<text x="638" y="219" font-family="Courier New, monospace" font-size="12" fill="#333">  para cada v en grafo.vertices():</text>
+<text x="638" y="235" font-family="Courier New, monospace" font-size="12" fill="#333">    color[v] ← BLANCO</text>
+<text x="638" y="251" font-family="Courier New, monospace" font-size="12" fill="#333">  para cada v en grafo.vertices():</text>
+<text x="638" y="267" font-family="Courier New, monospace" font-size="12" fill="#333">    si color[v] == BLANCO entonces</text>
+<text x="638" y="283" font-family="Courier New, monospace" font-size="12" fill="#333">      si dfsCiclo(v, color, grafo):</text>
+<text x="638" y="299" font-family="Courier New, monospace" font-size="12" fill="#c0392b">        retornar VERDADERO</text>
+<text x="638" y="315" font-family="Courier New, monospace" font-size="12" fill="#2980b9">  retornar FALSO</text>
+<text x="638" y="339" font-family="Courier New, monospace" font-size="12" fill="#1971c2">función dfsCiclo(v, color, grafo):</text>
+<text x="638" y="355" font-family="Courier New, monospace" font-size="12" fill="#333">  color[v] ← GRIS</text>
+<text x="638" y="371" font-family="Courier New, monospace" font-size="12" fill="#333">  para cada w en grafo.sucesores(v):</text>
+<text x="638" y="387" font-family="Courier New, monospace" font-size="12" fill="#333">    si color[w] == GRIS entonces</text>
+<text x="638" y="403" font-family="Courier New, monospace" font-size="12" fill="#6c757d">      // arco de retroceso → ciclo</text>
+<text x="638" y="419" font-family="Courier New, monospace" font-size="12" fill="#c0392b">      retornar VERDADERO</text>
+<text x="638" y="435" font-family="Courier New, monospace" font-size="12" fill="#333">    si color[w] == BLANCO entonces</text>
+<text x="638" y="451" font-family="Courier New, monospace" font-size="12" fill="#333">      si dfsCiclo(w, color, grafo):</text>
+<text x="638" y="467" font-family="Courier New, monospace" font-size="12" fill="#c0392b">        retornar VERDADERO</text>
+<text x="638" y="483" font-family="Courier New, monospace" font-size="12" fill="#333">  color[v] ← NEGRO</text>
+<text x="638" y="499" font-family="Courier New, monospace" font-size="12" fill="#2980b9">  retornar FALSO</text>
+<text x="638" y="523" font-family="Courier New, monospace" font-size="12" fill="#6c757d">// ─── Ejemplo de aplicación ───</text>
+<text x="638" y="539" font-family="Courier New, monospace" font-size="12" fill="#6c757d">// Grafo SIN ciclo: A→B, B→C, A→C</text>
+<text x="638" y="555" font-family="Courier New, monospace" font-size="12" fill="#6c757d">//   DFS: A→GRIS, B→GRIS, C→GRIS→NEGRO</text>
+<text x="638" y="571" font-family="Courier New, monospace" font-size="12" fill="#6c757d">//         B→NEGRO, A→NEGRO → FALSO ✓</text>
+<text x="638" y="595" font-family="Courier New, monospace" font-size="12" fill="#6c757d">// Grafo CON ciclo: A→B, B→C, C→A</text>
+<text x="638" y="611" font-family="Courier New, monospace" font-size="12" fill="#6c757d">//   DFS: A→GRIS, B→GRIS, C→GRIS</text>
+<text x="638" y="627" font-family="Courier New, monospace" font-size="12" fill="#6c757d">//   sucesor de C es A (GRIS) → VERDADERO ✓</text>
+<text x="638" y="651" font-family="Courier New, monospace" font-size="12" fill="#6c757d">// Caso Parte 1.3: grafo desde archivos</text>
+<text x="638" y="667" font-family="Courier New, monospace" font-size="12" fill="#6c757d">//   aeropuertos_2.txt: vértices</text>
+<text x="638" y="683" font-family="Courier New, monospace" font-size="12" fill="#6c757d">//   conexiones_2.txt: aristas (origen,dest)</text>
+<text x="638" y="699" font-family="Courier New, monospace" font-size="12" fill="#6c757d">//   Resultado: grafo CON ciclo → true</text>
+</svg>
