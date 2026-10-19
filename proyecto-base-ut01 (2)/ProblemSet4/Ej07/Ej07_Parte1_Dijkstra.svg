@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 930" width="1240" height="930">
+<defs><marker id="ah-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2f9e44"/></marker>
+<marker id="ah-red" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#e03131"/></marker>
+<marker id="ah-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1971c2"/></marker>
+<marker id="ah-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7048e8"/></marker>
+<marker id="ah-orange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#e67700"/></marker>
+<marker id="ah-teal" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0c8599"/></marker>
+<marker id="ah-dark" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#333"/></marker></defs>
+<rect width="1240" height="930" fill="white"/>
+<text x="30" y="38" font-family="sans-serif" font-size="21" font-weight="bold" fill="#1e1e1e" text-anchor="start">Ej 07 – Parte 1: Grafo Dirigido y Algoritmo Dijkstra</text>
+<line x1="615" y1="55" x2="615" y2="910" stroke="#dee2e6" stroke-width="1.5"/>
+<text x="110" y="72" font-family="sans-serif" font-size="17" font-weight="bold" fill="#1971c2" text-anchor="start">Grafo Dirigido</text>
+<circle cx="175" cy="310" r="28" fill="#d0ebff" stroke="#1971c2" stroke-width="2"/>
+<text x="175" y="310" font-family="sans-serif" font-size="20" font-weight="bold" fill="#1e1e1e" text-anchor="middle" dominant-baseline="central">A</text>
+<circle cx="375" cy="160" r="28" fill="#fff3bf" stroke="#e67700" stroke-width="2"/>
+<text x="375" y="160" font-family="sans-serif" font-size="20" font-weight="bold" fill="#1e1e1e" text-anchor="middle" dominant-baseline="central">B</text>
+<circle cx="560" cy="310" r="28" fill="#d0ebff" stroke="#1971c2" stroke-width="2"/>
+<text x="560" y="310" font-family="sans-serif" font-size="20" font-weight="bold" fill="#1e1e1e" text-anchor="middle" dominant-baseline="central">C</text>
+<circle cx="470" cy="480" r="28" fill="#d0ebff" stroke="#1971c2" stroke-width="2"/>
+<text x="470" y="480" font-family="sans-serif" font-size="20" font-weight="bold" fill="#1e1e1e" text-anchor="middle" dominant-baseline="central">D</text>
+<circle cx="225" cy="480" r="28" fill="#d0ebff" stroke="#1971c2" stroke-width="2"/>
+<text x="225" y="480" font-family="sans-serif" font-size="20" font-weight="bold" fill="#1e1e1e" text-anchor="middle" dominant-baseline="central">E</text>
+<path d="M 197.4,293.2 Q 255.0,205.0 352.6,176.8" fill="none" stroke="#2f9e44" stroke-width="1.8" marker-end="url(#ah-green)"/>
+<text x="247.0" y="213.0" font-family="sans-serif" font-size="14" font-weight="bold" fill="#2f9e44" text-anchor="middle">1</text>
+<path d="M 352.6,176.8 Q 295.0,265.0 197.4,293.2" fill="none" stroke="#e03131" stroke-width="1.8" marker-end="url(#ah-red)"/>
+<text x="303.0" y="261.0" font-family="sans-serif" font-size="14" font-weight="bold" fill="#e03131" text-anchor="middle">7</text>
+<line x1="203.0" y1="310.0" x2="532.0" y2="310.0" stroke="#1971c2" stroke-width="1.8" marker-end="url(#ah-blue)"/>
+<text x="367.5" y="300.0" font-family="sans-serif" font-size="14" font-weight="bold" fill="#1971c2" text-anchor="middle">2</text>
+<line x1="196.8" y1="328.3" x2="443.2" y2="470.4" stroke="#7048e8" stroke-width="1.8" marker-end="url(#ah-purple)"/>
+<text x="306.0" y="399.3" font-family="sans-serif" font-size="14" font-weight="bold" fill="#7048e8" text-anchor="middle">7</text>
+<line x1="448.2" y1="461.7" x2="201.8" y2="319.6" stroke="#e03131" stroke-width="1.8" marker-end="url(#ah-red)"/>
+<text x="339.0" y="390.7" font-family="sans-serif" font-size="14" font-weight="bold" fill="#e03131" text-anchor="middle">6</text>
+<line x1="396.7" y1="177.6" x2="538.3" y2="292.4" stroke="#2f9e44" stroke-width="1.8" marker-end="url(#ah-green)"/>
+<text x="477.5" y="225.0" font-family="sans-serif" font-size="14" font-weight="bold" fill="#2f9e44" text-anchor="middle">1</text>
+<line x1="383.0" y1="186.8" x2="462.0" y2="453.2" stroke="#1971c2" stroke-width="1.8" marker-end="url(#ah-blue)"/>
+<text x="436.5" y="320.0" font-family="sans-serif" font-size="14" font-weight="bold" fill="#1971c2" text-anchor="middle">2</text>
+<path d="M 546.9,334.7 Q 537.0,377.0 483.1,455.3" fill="none" stroke="#e67700" stroke-width="1.8" marker-end="url(#ah-orange)"/>
+<text x="545.0" y="385.0" font-family="sans-serif" font-size="14" font-weight="bold" fill="#e67700" text-anchor="middle">3</text>
+<path d="M 483.1,455.3 Q 493.0,413.0 546.9,334.7" fill="none" stroke="#7048e8" stroke-width="1.8" marker-end="url(#ah-purple)"/>
+<text x="485.0" y="409.0" font-family="sans-serif" font-size="14" font-weight="bold" fill="#7048e8" text-anchor="middle">4</text>
+<line x1="442.0" y1="473.0" x2="253.0" y2="473.0" stroke="#2f9e44" stroke-width="1.8" marker-end="url(#ah-green)"/>
+<text x="347.5" y="462.0" font-family="sans-serif" font-size="14" font-weight="bold" fill="#2f9e44" text-anchor="middle">4</text>
+<line x1="253.0" y1="487.0" x2="442.0" y2="487.0" stroke="#e03131" stroke-width="1.8" marker-end="url(#ah-red)"/>
+<text x="347.5" y="502.0" font-family="sans-serif" font-size="14" font-weight="bold" fill="#e03131" text-anchor="middle">8</text>
+<line x1="236.9" y1="454.6" x2="363.1" y2="185.4" stroke="#0c8599" stroke-width="1.8" marker-end="url(#ah-teal)"/>
+<text x="286.0" y="320.0" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0c8599" text-anchor="middle">2</text>
+<text x="635" y="72" font-family="sans-serif" font-size="17" font-weight="bold" fill="#1e1e1e" text-anchor="start">Dijkstra desde B  (* = dist. actualizada)</text>
+<rect x="635" y="83" width="570" height="300" fill="#f8f9fa" stroke="#adb5bd" stroke-width="1" rx="3"/>
+<rect x="635" y="83" width="570" height="32" fill="#e9ecef" stroke="#adb5bd" stroke-width="1" rx="3"/>
+<text x="635" y="83" font-family="sans-serif" font-size="0" font-weight="normal" fill="#1e1e1e" text-anchor="start"></text>
+<text x="652" y="105" font-family="'Courier New',monospace" font-size="14" font-weight="bold" fill="#1e1e1e">Paso</text>
+<text x="716" y="105" font-family="'Courier New',monospace" font-size="14" font-weight="bold" fill="#1e1e1e">Extraído</text>
+<text x="804" y="105" font-family="'Courier New',monospace" font-size="14" font-weight="bold" fill="#1e1e1e">d[A]</text>
+<text x="848" y="105" font-family="'Courier New',monospace" font-size="14" font-weight="bold" fill="#1e1e1e">d[B]</text>
+<text x="896" y="105" font-family="'Courier New',monospace" font-size="14" font-weight="bold" fill="#1e1e1e">d[C]</text>
+<text x="944" y="105" font-family="'Courier New',monospace" font-size="14" font-weight="bold" fill="#1e1e1e">d[D]</text>
+<text x="992" y="105" font-family="'Courier New',monospace" font-size="14" font-weight="bold" fill="#1e1e1e">d[E]</text>
+<line x1="635" y1="115" x2="1205" y2="115" stroke="#adb5bd" stroke-width="1"/>
+<text x="652" y="143" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">0</text>
+<text x="716" y="143" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">—</text>
+<text x="804" y="143" font-family="'Courier New',monospace" font-size="14" fill="#999" font-weight="normal">∞</text>
+<text x="848" y="143" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">0</text>
+<text x="896" y="143" font-family="'Courier New',monospace" font-size="14" fill="#999" font-weight="normal">∞</text>
+<text x="944" y="143" font-family="'Courier New',monospace" font-size="14" fill="#999" font-weight="normal">∞</text>
+<text x="992" y="143" font-family="'Courier New',monospace" font-size="14" fill="#999" font-weight="normal">∞</text>
+<text x="652" y="181" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">1</text>
+<text x="716" y="181" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">B</text>
+<text x="804" y="181" font-family="'Courier New',monospace" font-size="14" fill="#2f9e44" font-weight="bold">7*</text>
+<text x="848" y="181" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">0</text>
+<text x="896" y="181" font-family="'Courier New',monospace" font-size="14" fill="#2f9e44" font-weight="bold">1*</text>
+<text x="944" y="181" font-family="'Courier New',monospace" font-size="14" fill="#2f9e44" font-weight="bold">2*</text>
+<text x="992" y="181" font-family="'Courier New',monospace" font-size="14" fill="#999" font-weight="normal">∞</text>
+<text x="652" y="219" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">2</text>
+<text x="716" y="219" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">C</text>
+<text x="804" y="219" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">7</text>
+<text x="848" y="219" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">0</text>
+<text x="896" y="219" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">1</text>
+<text x="944" y="219" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">2</text>
+<text x="992" y="219" font-family="'Courier New',monospace" font-size="14" fill="#999" font-weight="normal">∞</text>
+<text x="652" y="257" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">3</text>
+<text x="716" y="257" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">D</text>
+<text x="804" y="257" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">7</text>
+<text x="848" y="257" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">0</text>
+<text x="896" y="257" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">1</text>
+<text x="944" y="257" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">2</text>
+<text x="992" y="257" font-family="'Courier New',monospace" font-size="14" fill="#2f9e44" font-weight="bold">6*</text>
+<text x="652" y="295" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">4</text>
+<text x="716" y="295" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">E</text>
+<text x="804" y="295" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">7</text>
+<text x="848" y="295" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">0</text>
+<text x="896" y="295" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">1</text>
+<text x="944" y="295" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">2</text>
+<text x="992" y="295" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">6</text>
+<text x="652" y="333" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">5</text>
+<text x="716" y="333" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">A</text>
+<text x="804" y="333" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">7</text>
+<text x="848" y="333" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">0</text>
+<text x="896" y="333" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">1</text>
+<text x="944" y="333" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">2</text>
+<text x="992" y="333" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e" font-weight="normal">6</text>
+<text x="635" y="403" font-family="sans-serif" font-size="17" font-weight="bold" fill="#1e1e1e" text-anchor="start">Vector de predecesores (desde B):</text>
+<rect x="635" y="413" width="570" height="172" fill="#ebfbee" stroke="#2f9e44" stroke-width="1" rx="3"/>
+<text x="650" y="438" font-family="'Courier New',monospace" font-size="14" fill="#2f9e44" font-weight="bold">pred[A] = B</text>
+<text x="756" y="438" font-family="'Courier New',monospace" font-size="14" fill="#555">→  B → A         </text>
+<text x="1060" y="438" font-family="'Courier New',monospace" font-size="14" fill="#888">costo: 7</text>
+<text x="650" y="468" font-family="'Courier New',monospace" font-size="14" fill="#2f9e44" font-weight="bold">pred[B] = —</text>
+<text x="756" y="468" font-family="'Courier New',monospace" font-size="14" fill="#555">→  [origen]      </text>
+<text x="1060" y="468" font-family="'Courier New',monospace" font-size="14" fill="#888">costo: 0</text>
+<text x="650" y="498" font-family="'Courier New',monospace" font-size="14" fill="#2f9e44" font-weight="bold">pred[C] = B</text>
+<text x="756" y="498" font-family="'Courier New',monospace" font-size="14" fill="#555">→  B → C         </text>
+<text x="1060" y="498" font-family="'Courier New',monospace" font-size="14" fill="#888">costo: 1</text>
+<text x="650" y="528" font-family="'Courier New',monospace" font-size="14" fill="#2f9e44" font-weight="bold">pred[D] = B</text>
+<text x="756" y="528" font-family="'Courier New',monospace" font-size="14" fill="#555">→  B → D         </text>
+<text x="1060" y="528" font-family="'Courier New',monospace" font-size="14" fill="#888">costo: 2</text>
+<text x="650" y="558" font-family="'Courier New',monospace" font-size="14" fill="#2f9e44" font-weight="bold">pred[E] = D</text>
+<text x="756" y="558" font-family="'Courier New',monospace" font-size="14" fill="#555">→  B → D → E    </text>
+<text x="1060" y="558" font-family="'Courier New',monospace" font-size="14" fill="#888">costo: 6</text>
+<text x="635" y="606" font-family="sans-serif" font-size="17" font-weight="bold" fill="#1e1e1e" text-anchor="start">Pseudocódigo – imprimirCamino(pred, origen, destino):</text>
+<rect x="635" y="616" width="570" height="268" fill="#f3f0ff" stroke="#7048e8" stroke-width="1" rx="3"/>
+<text x="650" y="640" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">1.  camino &#x2190; Pila vacía</text>
+<text x="650" y="668" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">2.  actual &#x2190; destino</text>
+<text x="650" y="696" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">3.  MIENTRAS actual &#x2260; origen:</text>
+<text x="650" y="724" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">4.      camino.push(actual)</text>
+<text x="650" y="752" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">5.      actual &#x2190; pred[actual]</text>
+<text x="650" y="780" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">6.  camino.push(origen)</text>
+<text x="650" y="808" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">7.  MIENTRAS camino no vacía:</text>
+<text x="650" y="836" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">8.      imprimir camino.pop()</text>
+<text x="650" y="864" font-family="'Courier New',monospace" font-size="14" fill="#1e1e1e">9.      SI camino no vacía: imprimir " → "</text>
+</svg>
