@@ -1,6 +1,7 @@
 package ucu.edu.aed.ProblemSets.ProblemSet2.Ej12;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import ucu.edu.aed.tda.TDALista;
  
 // Programa de prueba del Ejercicio 12 - El Grimorio del Archimago.
@@ -51,6 +52,8 @@ public class MainGrimorio {
         uno.agregarHechizo(7, "Shadow");
         System.out.println("Uno solo -> cántico: [" + uno.generarCantico() + "]");
 =======
+=======
+>>>>>>> e375feff9fbf1b983dd66eb60784089a8f5ecb96
 import java.util.List;
 
 /**
@@ -99,6 +102,9 @@ public class MainGrimorio {
 
         System.out.println("\n--- Cántico secreto de Aldric ---");
         System.out.println("  \"" + grimorio.generarCantico() + "\"");
+<<<<<<< HEAD
 >>>>>>> 0a8e58794c3cd21f6f03ec0fe58df85eef8777bf
+=======
+>>>>>>> e375feff9fbf1b983dd66eb60784089a8f5ecb96
     }
 }

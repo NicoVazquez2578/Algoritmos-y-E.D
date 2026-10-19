@@ -68,7 +68,7 @@ public class DirectedGraphAlgorithms implements IDirectedGraphAlgorithms {
                 }
             }
         }
-        return new DijkstraResult<>(origen, dist, pred);
+        return new ResultadoDijkstra<>(origen, dist, pred);
     }
 
     // ── Floyd-Warshall ───────────────────────────────────────────────────────
@@ -100,7 +100,7 @@ public class DirectedGraphAlgorithms implements IDirectedGraphAlgorithms {
                         prec[i][j] = prec[k][j];
                     }
 
-        return new FloydWarshallResult<>(verts, dist, prec);
+        return new ResultadoFloyd<>(verts, dist, prec);
     }
 
     @Override
@@ -138,32 +138,73 @@ public class DirectedGraphAlgorithms implements IDirectedGraphAlgorithms {
         return ecc;
     }
 
-    // ── Todos los caminos ─────────────────────────────────────────────────────
+    // ── Ejercicio 5: Obtener todos los caminos posibles (DFS con Backtracking) ──
 
+    /**
+     * Busca y retorna una lista con todos los caminos posibles entre una ciudad origen
+     * y una ciudad destino, calculando el costo total de cada viaje.
+     */
     @Override
     public <V, D extends WeightedEdge> List<Path<V>> obtenerTodosLosCaminos(
             Comparable<V> source, Comparable<V> target, IGraph<V, D> grafo) {
-        V s = grafo.buscarVertice(source);
-        V t = grafo.buscarVertice(target);
-        List<Path<V>> resultado = new ArrayList<>();
-        if (s == null || t == null) return resultado;
-        dfsAllPaths(s, t, grafo, new ArrayList<>(), 0.0, resultado);
-        return resultado;
+
+        V ciudadOrigen = grafo.buscarVertice(source);
+        V ciudadDestino = grafo.buscarVertice(target);
+        List<Path<V>> todosLosCaminos = new ArrayList<>();
+
+        // Si alguna de las dos ciudades no existe en el mapa, no hay caminos
+        if (ciudadOrigen == null || ciudadDestino == null) {
+            return todosLosCaminos;
+        }
+
+        // Conjunto auxiliar para saber qué ciudades ya visitamos en la ruta actual y no repetir
+        Set<V> visitadosEnRutaActual = new HashSet<>();
+        List<V> rutaActual = new ArrayList<>();
+
+        // Iniciamos la búsqueda recursiva desde el origen con costo acumulado 0
+        buscarCaminosRecursivo(ciudadOrigen, ciudadDestino, grafo, rutaActual, visitadosEnRutaActual, 0.0, todosLosCaminos);
+
+        return todosLosCaminos;
     }
 
-    private <V, D extends WeightedEdge> void dfsAllPaths(
-            V actual, V destino, IGraph<V, D> grafo,
-            List<V> camino, double costo, List<Path<V>> todos) {
-        camino.add(actual);
-        if (actual.equals(destino)) {
-            todos.add(new Path<>(new ArrayList<>(camino), costo));
+    /**
+     * Método auxiliar que avanza paso a paso explorando los vuelos disponibles.
+     * Utiliza la técnica de "Backtracking" (retroceso): avanza por una ruta y cuando llega al final,
+     * retrocede un paso para probar otra alternativa.
+     */
+    private <V, D extends WeightedEdge> void buscarCaminosRecursivo(
+            V ciudadActual, V ciudadDestino, IGraph<V, D> grafo,
+            List<V> rutaActual, Set<V> visitadosEnRutaActual, double costoAcumulado, List<Path<V>> resultadoFinal) {
+
+        // 1. Agregamos la ciudad actual a nuestra ruta en curso
+        rutaActual.add(ciudadActual);
+        visitadosEnRutaActual.add(ciudadActual);
+
+        // 2. CASO BASE: ¿Llegamos al destino?
+        if (ciudadActual.equals(ciudadDestino)) {
+            // Guardamos una copia de la ruta completa encontrada y su costo total
+            resultadoFinal.add(new Path<>(new ArrayList<>(rutaActual), costoAcumulado));
         } else {
-            for (Edge<V, D> e : grafo.adyacencias(grafo.construirComparable(actual))) {
-                if (!camino.contains(e.target()))
-                    dfsAllPaths(e.target(), destino, grafo, camino, costo + e.dato().getWeight(), todos);
+            // 3. CASO RECURSIVO: Si todavía no llegamos, vemos a qué ciudades podemos volar desde acá
+            for (Edge<V, D> conexion : grafo.adyacencias(grafo.construirComparable(ciudadActual))) {
+                V ciudadSiguiente = conexion.target();
+                double precioVuelo = conexion.dato().getWeight();
+
+                // Si la ciudad siguiente NO está en la ruta actual, volamos hacia ella
+                if (!visitadosEnRutaActual.contains(ciudadSiguiente)) {
+                    buscarCaminosRecursivo(
+                            ciudadSiguiente, ciudadDestino, grafo,
+                            rutaActual, visitadosEnRutaActual,
+                            costoAcumulado + precioVuelo, resultadoFinal);
+                }
+                // Si ya estaba en la ruta actual, la ignoramos para no dar vueltas en círculo (ciclos)
             }
         }
-        camino.remove(camino.size() - 1);
+
+        // 4. BACKTRACKING (Retroceso):
+        // Sacamos esta ciudad de la ruta actual para poder probar otros caminos que también puedan pasar por ella
+        rutaActual.remove(rutaActual.size() - 1);
+        visitadosEnRutaActual.remove(ciudadActual);
     }
 
     // ── Recorridos ────────────────────────────────────────────────────────────
@@ -199,69 +240,4 @@ public class DirectedGraphAlgorithms implements IDirectedGraphAlgorithms {
         }
     }
 
-    // ── Clases internas de resultado ─────────────────────────────────────────
-
-    private static class DijkstraResult<V> implements IDijkstraResult<V> {
-        private final V origen;
-        private final Map<V, Double> dist;
-        private final Map<V, V> pred;
-
-        DijkstraResult(V origen, Map<V, Double> dist, Map<V, V> pred) {
-            this.origen = origen;
-            this.dist = dist;
-            this.pred = pred;
-        }
-
-        @Override
-        public double getCost(V dest) { return dist.getOrDefault(dest, Double.POSITIVE_INFINITY); }
-
-        @Override
-        public List<V> getPath(V dest) {
-            if (getCost(dest) == Double.POSITIVE_INFINITY) return null;
-            LinkedList<V> path = new LinkedList<>();
-            V cur = dest;
-            while (cur != null && !cur.equals(origen)) {
-                path.addFirst(cur);
-                cur = pred.get(cur);
-            }
-            if (cur == null) return null;
-            path.addFirst(origen);
-            return new ArrayList<>(path);
-        }
-    }
-
-    private static class FloydWarshallResult<V> implements IFloydWarshallResult<V> {
-        private final List<V> verts;
-        private final double[][] dist;
-        private final int[][] prec;
-        private final Map<V, Integer> idx;
-
-        FloydWarshallResult(List<V> verts, double[][] dist, int[][] prec) {
-            this.verts = verts;
-            this.dist = dist;
-            this.prec = prec;
-            idx = new HashMap<>();
-            for (int i = 0; i < verts.size(); i++) idx.put(verts.get(i), i);
-        }
-
-        @Override
-        public double getCost(V from, V to) { return dist[idx.get(from)][idx.get(to)]; }
-
-        @Override
-        public boolean connected(V from, V to) { return dist[idx.get(from)][idx.get(to)] < Double.POSITIVE_INFINITY; }
-
-        @Override
-        public List<V> getPath(V from, V to) {
-            int s = idx.get(from), t = idx.get(to);
-            if (prec[s][t] == -1 && s != t) return null;
-            LinkedList<V> path = new LinkedList<>();
-            int cur = t;
-            path.addFirst(verts.get(cur));
-            while (cur != s) {
-                cur = prec[s][cur];
-                path.addFirst(verts.get(cur));
-            }
-            return new ArrayList<>(path);
-        }
-    }
 }

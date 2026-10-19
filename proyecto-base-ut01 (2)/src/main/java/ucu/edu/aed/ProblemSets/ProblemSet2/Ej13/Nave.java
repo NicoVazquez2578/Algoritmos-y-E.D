@@ -1,6 +1,7 @@
 package ucu.edu.aed.ProblemSets.ProblemSet2.Ej13;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*
   Nave de la flota de la Federación Intergaláctica. Tiene un código único,
   una clase (por ejemplo "Explorador", "Destructor", "Médica") y la cantidad
@@ -48,6 +49,8 @@ public class Nave implements Comparable<Nave> {
 }
  
 =======
+=======
+>>>>>>> e375feff9fbf1b983dd66eb60784089a8f5ecb96
 /**
  * Nave registrada en la Federación Intergaláctica.
  * El código es la clave del árbol AVL.
@@ -74,4 +77,7 @@ public class Nave {
         return "(" + codigo + ", \"" + clase + "\", " + combustible + ")";
     }
 }
+<<<<<<< HEAD
 >>>>>>> 0a8e58794c3cd21f6f03ec0fe58df85eef8777bf
+=======
+>>>>>>> e375feff9fbf1b983dd66eb60784089a8f5ecb96

@@ -44,7 +44,9 @@ public class MainEj06 {
 
         // ── Parte 1.3: Ejecutar con archivos conexiones_2 / aeropuertos_2 ───
         System.out.println("\n=== Parte 1.3 - Grafo desde archivos ===");
-        String baseDir = "proyecto-base-ut01 (2)/ProblemSet4/Ej06/";
+        String baseDir = new File("ProblemSet4/Ej06/aeropuertos_2.txt").exists()
+                ? "ProblemSet4/Ej06/"
+                : "proyecto-base-ut01 (2)/ProblemSet4/Ej06/";
         DirectedGraph<String, WeightedEdge> grafoDatos = cargarGrafo(
                 baseDir + "aeropuertos_2.txt", baseDir + "conexiones_2.txt");
         System.out.println("Vértices: " + grafoDatos.vertices());
