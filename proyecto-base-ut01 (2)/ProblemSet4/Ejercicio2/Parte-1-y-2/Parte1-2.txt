@@ -1,0 +1,19 @@
+¿Es posible reducirlo?
+
+Investigamos qué se puede hacer y vimos que depende de qué se quiera reducir.
+
+Evitar trabajo inútil. 
+Si A[i,k] es infinito, no existe camino de i a k. Entonces pasar por k no puede mejorar nada, y se puede saltear el bucle de j.
+ Esto ahorra tiempo cuando hay pocas conexiones, pero en el peor caso sigue siendo O(n³).
+
+Usar otro algoritmo. 
+Si en vez de Floyd se ejecuta Dijkstra desde cada ciudad, en un grafo con pocas conexiones el tiempo total es menor que n³.
+ Si el grafo tiene muchísimas conexiones (casi todas las ciudades conectadas entre sí), no se gana nada. Para una aerolínea, que tiene pocas rutas por aeropuerto, Dijkstra repetido podría convenir si hubiera muchas ciudades.
+
+No recalcular todo cuando cambia algo. 
+Si se agrega una ruta nueva de u a v con costo w, no hace falta volver a correr Floyd entero.
+ Alcanza con actualizar cada par con A[i,j] = min(A[i,j], A[i,u] + w + A[v,j]), que cuesta O(n²). Esto sirve cuando se agrega una ruta o baja un costo. Si un costo sube o se elimina una ruta, parece que hay que recalcular.
+
+Calcular una vez y consultar muchas veces. Después de correr Floyd, saber el costo entre dos ciudades es leer A[i,j], que es O(1).
+
+Entendemos entonces que el orden O(n³) se puede mejorar en algunos casos (grafos con pocas conexiones, o cambios pequeños), pero para el caso general no encontramos una forma simple de bajarlo.
