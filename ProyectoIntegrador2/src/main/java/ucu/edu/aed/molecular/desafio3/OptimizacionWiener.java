@@ -1,5 +1,12 @@
 package ucu.edu.aed.molecular.desafio3;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+
 import ucu.edu.aed.molecular.grafo.DirectedGraph;
 import ucu.edu.aed.molecular.grafo.algoritmos.DirectedGraphAlgorithms;
 import ucu.edu.aed.molecular.molecula.Atomo;
@@ -9,8 +16,6 @@ import ucu.edu.aed.molecular.molecula.Molecula;
 import ucu.edu.aed.molecular.molecula.TipoEnlace;
 import ucu.edu.aed.tda.grafo.model.edge.Edge;
 import ucu.edu.aed.tda.grafo.model.result.IFloydWarshallResult;
-
-import java.util.*;
 
 
 public class OptimizacionWiener {
