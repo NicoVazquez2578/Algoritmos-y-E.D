@@ -1,0 +1,58 @@
+Ejercicio 10 - Parte 2: Pseudocódigo BEA (Búsqueda en Amplitud) para Grafo No Dirigido
+=========================================================================================
+
+PRECONDICIONES:
+  - grafo: estructura de Grafo No Dirigido con vértices y aristas
+  - origen: vértice de inicio perteneciente al grafo
+  - Cada vértice tiene un estado "visitado" (inicialmente false)
+
+ALGORITMO BEA(grafo, origen):
+
+  visitados <- conjunto vacío
+  cola      <- cola FIFO vacía
+  padre     <- mapa vacío   // para reconstruir el árbol abarcador
+
+  visitados.agregar(origen)
+  padre[origen] <- null
+  cola.encolar(origen)
+
+  MIENTRAS cola no esté vacía HACER
+    actual <- cola.desencolar()
+    PROCESAR(actual)             // ej: imprimir, acumular en lista
+
+    PARA CADA arista (actual, vecino) en adyacencias(actual) HACER
+      SI vecino NO está en visitados ENTONCES
+        visitados.agregar(vecino)
+        padre[vecino] <- actual
+        cola.encolar(vecino)
+      FIN SI
+    FIN PARA
+  FIN MIENTRAS
+
+  RETORNAR padre   // árbol abarcador BFS
+
+FIN BEA
+
+---------------------------------------------------------------------------
+NOTAS SOBRE COMPLEJIDAD:
+  - Cada vértice es encolado y desencolado exactamente una vez:  O(|V|)
+  - Cada arista es examinada exactamente dos veces:              O(|E|)
+  - Total: O(|V| + |E|)
+
+ÁRBOL ABARCADOR (resultado Parte 1):
+  BFS desde E sobre el grafo A-B-C-D-E-F-G-H:
+
+  Nivel 0: E
+  Nivel 1: D (padre E), F (padre E), G (padre E)
+  Nivel 2: A (padre D), B (padre D), C (padre D), H (padre F o G)
+
+  Orden de visita: E -> D -> F -> G -> A -> B -> C -> H
+
+  Arcos del árbol abarcador:
+    E -> D
+    E -> F
+    E -> G
+    D -> A
+    D -> B
+    D -> C
+    F -> H   (H es alcanzado por F antes que por G)
