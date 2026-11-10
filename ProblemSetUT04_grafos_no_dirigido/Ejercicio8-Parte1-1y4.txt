@@ -1,0 +1,40 @@
+Parte1
+
+Estructura: grafo no dirigido y ponderado
+	Grafo: un conjunto de puntos (llamados vértices) unidos por líneas (llamadas aristas).
+     Acá cada vértice es una zona y cada arista es un camino posible entre dos zonas.
+	
+No dirigido: el camino entre la Zona 1 y la Zona 2 sirve en los dos sentidos. 
+Por eso la tabla es simétrica (la distancia de 1 a 2 es igual a la de 2 a 1).
+	Ponderado: cada arista tiene un número asociado, llamado peso. Acá el peso son los km del camino.
+	Como todas las zonas tienen un camino posible con todas las demás, es un grafo completo: tiene 6·5/2 = 15 aristas posibles.
+
+Concepto: árbol de expansión mínimo (AAM)
+	Árbol: un grafo conectado que no tiene ciclos. Un ciclo es una vuelta que vuelve al punto de partida; en este problema sería un camino de más, que no hace falta para conectar.
+	De expansión: incluye todas las zonas.
+	Mínimo: la suma de los km de sus aristas es la menor posible.
+	Con 6 zonas, el árbol siempre tiene 5 caminos (vértices − 1). Con menos quedaría alguna zona aislada; con más se formaría un ciclo.
+
+Algoritmos
+	Prim: hace crecer el árbol desde una zona de inicio. En cada paso agrega el camino más corto que une una zona ya conectada con una zona que todavía no lo está.
+	Kruskal: ordena todos los caminos de menor a mayor y los recorre en ese orden; agrega cada camino solo si une dos grupos de zonas que todavía no estaban conectados (es decir, si no forma un ciclo).
+Los dos son algoritmos greedy (ávidos): en cada paso toman la mejor opción del momento y nunca vuelven atrás. Para este problema, esa estrategia garantiza el resultado óptimo.
+
+Estructura de datos para guardar el grafo
+Se usa una lista de adyacencias: cada zona tiene una lista con sus zonas vecinas y la distancia a cada una. Es la representación que pide la consigna y la que recorre directamente el algoritmo de Prim al buscar los caminos que salen de cada zona.
+
+Parte4
+
+Se ejecuta Prim desde la Zona 1. Notación:
+•	U: las zonas que ya están en el árbol (ya conectadas).
+•	V − U: las zonas que faltan conectar.
+En cada paso se mira, para cada zona que falta, su camino más barato hacia alguna zona de U, y se elige el más barato de todos. La zona elegida pasa de V − U a U.
+
+Cómo se actualizan los caminos en cada paso
+•	Paso 2: al entrar Z4, la Zona 3 baja de 5 km (camino 1–3) a 2 km (camino 4–3), y la Zona 6 baja de 2 km (1–6) a 1 km (4–6).
+•	Paso 3: al entrar Z6, la Zona 5 baja de 7 km (1–5) a 4 km (6–5).
+•	Paso 4: al entrar Z2, la Zona 3 baja de 2 km (4–3) a 1 km (2–3).
+•	Paso 5: al entrar Z3, la Zona 5 baja de 4 km (6–5) a 3 km (3–5).
+Resultado
+Los caminos a construir son 1–4, 4–6, 1–2, 2–3 y 3–5. Son 5 caminos (6 zonas − 1), todas las zonas quedan conectadas y no hay ciclos.
+Costo total: 1 + 1 + 2 + 1 + 3 = 8 km.
