@@ -1,0 +1,82 @@
+Ejercicio 11 - Parte 2: Pseudocódigo Puntos de Articulación (Tarjan)
+=====================================================================
+
+DEFINICIÓN:
+  Un vértice v es punto de articulación si su eliminación desconecta el grafo.
+
+PRECONDICIONES:
+  - grafo: Grafo No Dirigido conexo.
+  - Se utilizan los métodos vertices() y adyacencias(v).
+
+ESTRUCTURAS AUXILIARES:
+  disc[v]  : tiempo de descubrimiento de v en la DFS (entero)
+  low[v]   : tiempo más bajo alcanzable desde el subárbol de v
+              (incluyendo arcos de retroceso)
+  padre[v] : vértice que descubrió a v en la DFS (null si v es raíz)
+  timer    : contador global, incrementado con cada vértice descubierto
+  ap       : conjunto de puntos de articulación (resultado)
+
+ALGORITMO PRINCIPAL puntosDeArticulacion(grafo):
+
+  ap    <- conjunto vacío
+  disc  <- mapa vacío
+  low   <- mapa vacío
+  padre <- mapa vacío
+  timer <- 0
+
+  PARA CADA v en grafo.vertices() HACER
+    SI v NO está en disc ENTONCES
+      DFS_AP(v, grafo, disc, low, padre, ap, timer)
+    FIN SI
+  FIN PARA
+
+  RETORNAR ap
+
+FIN puntosDeArticulacion
+
+PROCEDIMIENTO DFS_AP(v, grafo, disc, low, padre, ap, timer):
+
+  disc[v] <- timer
+  low[v]  <- timer
+  timer   <- timer + 1
+  hijos   <- 0
+
+  PARA CADA arista (v, w) en grafo.adyacencias(v) HACER
+    SI w NO está en disc ENTONCES          // arco de árbol
+      hijos <- hijos + 1
+      padre[w] <- v
+      DFS_AP(w, grafo, disc, low, padre, ap, timer)
+      low[v] <- min(low[v], low[w])
+
+      // condición 1: v es raíz con más de un hijo
+      SI padre[v] = null Y hijos > 1 ENTONCES
+        ap.agregar(v)
+      FIN SI
+
+      // condición 2: v no es raíz y ningún descendiente de w
+      //              tiene arco de retroceso que suba sobre v
+      SI padre[v] ≠ null Y low[w] >= disc[v] ENTONCES
+        ap.agregar(v)
+      FIN SI
+
+    SINO SI w ≠ padre[v] ENTONCES          // arco de retroceso
+      low[v] <- min(low[v], disc[w])
+    FIN SI
+  FIN PARA
+
+FIN DFS_AP
+
+---------------------------------------------------------------------------
+COMPLEJIDAD: O(|V| + |E|)   (DFS lineal)
+
+RESULTADO PARA EL GRAFO DE EJ11:
+
+  Red: NAIROBI-CAIRO, NAIROBI-MONROVIA, NAIROBI-GAROUA,
+       MONROVIA-GAROUA, MONROVIA-MEKELE, GAROUA-MEKELE, MEKELE-PRAIA
+
+  Puntos de articulación encontrados: NAIROBI, MEKELE
+
+  Justificación:
+  - NAIROBI: si falla, CAIRO queda aislado (CAIRO sólo se conecta a NAIROBI).
+  - MEKELE:  si falla, PRAIA queda aislado (PRAIA sólo se conecta a MEKELE).
+  - CAIRO, MONROVIA, GAROUA, PRAIA: su falla no desconecta la red.

@@ -1,0 +1,48 @@
+// A => matriz de costos mínimos
+// C => matriz de costos de las aristas (∞ si no hay arista)
+// P => matriz de intermedios (para recuperar los caminos)
+
+floyd(C, n)
+    // inicializar A y P
+    Para todo i = 1...n hacer
+        Para todo j = 1...n hacer
+            A[i,j] = C[i,j]
+            P[i,j] = 0
+        FinPara
+        A[i,i] = 0
+    FinPara
+
+    Para todo k = 1...n hacer
+        Para todo i = 1...n hacer
+            Para todo j = 1...n hacer
+                Si A[i,k] + A[k,j] < A[i,j] entonces
+                    A[i,j] = A[i,k] + A[k,j]
+                    P[i,j] = k            // pasar por k mejora el camino i -> j
+                FinSi
+            FinPara
+        FinPara
+    FinPara
+FinFloyd
+
+
+// imprime los vértices intermedios del camino mínimo de i a j
+camino(i, j)
+    k = P[i,j]
+    Si k <> 0 entonces
+        camino(i, k)                      // tramo i -> k
+        imprimir k
+        camino(k, j)                      // tramo k -> j
+    FinSi
+FinCamino
+
+
+// imprime el camino mínimo completo de i a j
+ruta(i, j)
+    Si A[i,j] = ∞ entonces
+        imprimir "no hay camino"
+    Sino
+        imprimir i
+        camino(i, j)
+        imprimir j
+    FinSi
+FinRuta
